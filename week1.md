@@ -1,5 +1,5 @@
 
-# week1 
+# week1 Introduction
 
 ## 1.2 The 4 Layer Internet Model 
 
@@ -142,3 +142,134 @@ Connectionless | No per-flow state, packets might be mis-sequenced.
 ### Inside Each Hop
 
 How does a router make decision ?  It use something called *forwarding table*. 
+
+dest | link
+--- | ---
+0.0.0.0/0 (default) | 1
+171.33.0.0/16 (pattern A) | 5
+23.0.0.0/8 (B) | 2
+28.33.5.0/24 (C)| 4
+171.32.0.0/16 (D) | 2
+67.0.0.0/8 (E) | 6
+216.0.0.0/8 (F) | 1
+
+When a packet arrives, the router checks which forward table table's entry pattern best matches the packet, it forward that packet along that entry's link. 
+
+The default router is the least specific pattern , it matches every IP address. The default router is used specially for a edge networks. 
+
+### Under the Hood
+
+- Request web page from www.cs.brown.edu
+- Use wireshark to see TCP byte stream establishment and data exchange
+    1. set wireshark filter:  `tcp.port==80 && ip.addr==128.148.32.12`
+    2. then select the enthernet, say `en1`
+    3. **Start** wireshark
+    4. next open web browse to visit www.cs.brown.edu. You can see packets in wireshark.
+- Use traceroute to see route packets take through Internet.
+    - `traceroute -w 1  www.cs.brown.edu`
+
+
+## 1.5 Packet switching principle
+
+**Packet**: A self-contained unit of data that carries information necessary for it to reach its destination.  Packet switching is the idea that we break our data up into discrete, self-contained chunks of data. Each chunk, called a packet, carries sufficient information that a network can deliver the packet to its destination. 
+
+
+**Packet switching**: Independently for each arriving packet, pick its outgoing link. If the link is free, send it. Else hold the packet for later. 
+
+each packet contains an explicit route, specifying the IDs of each packet switch along the way. 
+
+```
+DATA | DEST  C B A 
+
+src -- A -- B -- C -- dest
+```
+
+We call this "self routing" or "source routing", because the source specifies the route. When the source sends a packet, it puts in the packet "A,B,C,destination". It turns out the Internet supports source routing , but its generally turned off because it raises big security issues.
+
+One simple optimization , and what the Internet mostly does today, is to place a small amount of state in each switch which tells it which next hop to send packets to.  In this model, all the packet needs to carry is the destination address.  Using the address, each switch along the way can make the right decision. 
+
+
+### Two consequences 
+
+1. **Simple** packet forwarding
+    - No per-flow state required ( Flow: A collection of datagrams belonging to the same end-to-end communication, e.g. a TCP connection )
+2. **Efficient** sharing of links
+
+### Data traffic is bursty
+
+- Packet switching allows flows to use all available link capacity.
+- Packet switching allows flows to share link capacity.
+
+This is called *Statistical Multiplexing*.
+
+
+## 1.7 Encapslation principle
+
+- Encapsulation allows you to layer recursively
+- Example: Virtual Private Network (VPN):
+    - HTTP(web) application payload in
+    - a TCP transport segment in 
+    - an IP network packet in 
+    - a secured TLS presentation message in 
+    - a TCP transport segment in 
+    - an IP network packet in 
+    - an Ethernet link frame .
+
+![](imgs/cs144_encapsulation.png)
+
+
+## 1.8 Byte Order
+
+Network byte order is big endian 
+
+```
+1024 = 0x400 =  | 0x40 | 0x00 | 
+```
+
+### Portable Code
+
+- Different processor have different endianness
+    - Little endian: x86,  big endian: ARM
+- You have to convert network byte order values to your host order 
+- Helper functions:  htons(), ntohs(), htonl(), ntohl()
+    - htons: host to network short
+    - ntohl: network to host long 
+    - 
+    ```c
+    uint16_t http_port = 80 ; // host order
+    unit16_t packet_port = ntohs( packet->port ) ; 
+    if (packet_port == http_port ) {
+        ... // OK
+    }
+    ```
+
+
+## 1.9 IPv4 address
+
+- Netmask: apply this mask, if it matches, in the same network
+    - Netmask of 255.255.255.0 means if the first 24 bits match
+    - Netmask of 255.255.252.0 means if the first 22 bits match
+    - Netmask of 255.128.0.0 means if the first 9 bits match
+    - Smaller netmask (fewer bit 1s)  means large network.
+- Classless Inter-Domain Routing(CIDR)
+    - Address block is a pair: address,count
+    - 171.64.0.0/16 means any address in the range 171.64.0.0 to 171.64.255.255
+    - A /24 describes 256 addresses, a /20 describes 4096 address.
+
+
+## 1.11 Address Resolution Protocol (ARP)
+
+ARP is the mechanism by which the network layer can discover the link address associated with a network address it's directly connected to.  Put another way, it's how a device gets an answer to the question: "I have an IP packet whose next hop is this address -- what link address should I send it to?"
+
+ARP is needed because each protocol layer has its own names and addresses. 
+
+An IP address is a network-layer address. i.e. Host: 171.67.76.65
+
+A link address, in contrast, describes a particular network card, a unique device that sends and receive link layer frames.  Ethernet, for example, has 48bit address. Interface: 00:13:72:4c:d9:6a
+
+
+
+
+
+
+
