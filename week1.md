@@ -267,7 +267,46 @@ An IP address is a network-layer address. i.e. Host: 171.67.76.65
 
 A link address, in contrast, describes a particular network card, a unique device that sends and receive link layer frames.  Ethernet, for example, has 48bit address. Interface: 00:13:72:4c:d9:6a
 
+The fact that link layer and network layer address are decoupled logically but coupled in practice is in some ways a histroical artifact. 
 
+Furthermore , there turns out to be a bunch of situations where having a separate link layer address is very valuable. 
+
+For an example , when I register a computer computer with Stanford's network, I register its link layer address, the adress of the network card. So what does this mean in practice? 
+
+```
+computer A
+192.168.0.6
+netmask: 255.255.255.0
+gateway: 192.168.0.1
+00:13:72:4c:d9:6a
+
+gateway 
+192.168.0.1
+00:18:e7:f3:ce:1a
+171.43.22.8
+00.18.e7.f3.ce.1b
+
+computer B
+171.43.22.25
+9:9:9:9:9:9
+```  
+
+Let's say node A  , wants to send a packet to node B.  It's going to generate an IP packet with source address 192.168.0.5 and destination address 171.43.22.25. A checkes whether the destination address is in the same network. The netmask tells it that the destination address is in a different network. This means node A needs to send the packet through the gateway, or 192.168.0.1. To do this , it sends a packets whose network layer destination is 171.43.22.5, but whose link-layer destination is the link layer address of the gateway. So the packet has a network layer destination 171.43.22.5 and a link layer destination 00:18:e7:f3:ce:1a.  So we have an IP packet from A to B, encapsulated inside a link layer frame from A to the gateway.  When the packet reaches the gateway, the gateway looks up the next hop. decides it's B, and puts the IP pakcet inside a link layer frame to B. 
+
+So here we get to the problem ARP solves. A knows that it needs to send a packet through the gateway that has IP address 192.168.0.1. To do so, it needs to have the link layer address associated with 192.168.0.1.  How does it get the address?  We somehow need to be able to map a layer 3 ( network layer) address,  to its corresponding layer 2(link layer) address. We do this with a protocol called **ARP**. 
+
+- ARP
+    - Generates mapping between layer2 and layer3 address
+        - Nodes cache mappings, cache entries expire
+    - Simple request-reply protocol
+        - "Who has network address X?"
+        - "I have network address X."
+    - Request sent to link layer broadcast address
+    - Reply sent to requesting address ( not broadcast)
+    - Packet format includes redundant data 
+        - Request has sufficient information to generate a mapping 
+        - Makes debugging much simpler
+    - No "sharing" of state: bad state will die eventually
 
 
 
