@@ -308,6 +308,13 @@ So here we get to the problem ARP solves. A knows that it needs to send a packet
         - Makes debugging much simpler
     - No "sharing" of state: bad state will die eventually
 
+## 1.12
+
+- Basic architectural ideas and principles
+    - Packet switching
+    - Layering
+    - Encapsulation
+
 
 
 
