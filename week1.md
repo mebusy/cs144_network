@@ -1,5 +1,5 @@
 
-# week1 Introduction
+# week1 Link/Network Layer
 
 ## 1.2 The 4 Layer Internet Model 
 
