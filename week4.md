@@ -97,6 +97,103 @@ The scheme that we're going to use is AIMD( additive increase, multiplicative de
 
 ## 4.4 Multiple Flows
 
+```
+A \
+B --Router buffer --
+C /
+```
+
+Each flow will share Router buffer evenly.
+
+When a flow has one of its packets dropped, the flow will halve its window size, but all the other flows will be unaffected. 
+
+
+Throughput R  = √(3/2)·1/(RTT·√p)
+
+It means that when we're communicating with a server that's further away, we can expect a lower rate. There is generally considered a weakness of AIMD. 
+
+- Summary
+    1. Throughput of an AIMD flow is sensitive to the drop probability and is very sensitive to the RTT.
+    2. With many flows , each flow follows its own AIMD rule
+    3. If the bottleneck contain packets from many flows, the buffer is going to remain highly occupied all the time.
+        - This means the RTT seen by packets is about the same, and we can safely assume RTT is constant
+
+
+## 4.5 TCP congestion control  II
+
+TCP uses a simple finite state machine to control the number of packets it has outstanding in the network. 
+
+The goal of congestion control is to limitoutstanding data so it does not congest network, improves o overall performance.  What makes it difficult is that in TCP's case the sender has very limited information of the state of the network. 
+
+AIMD is a simple and highly effective algorithm to manage congestion but this wasn't realized from the beginning. 
+
+3 Questions
+
+1. When should you send new data ?
+2. When should you send data retrasmissions ?
+3. When should you send acknowledgments ?
+
+### Congestion Windwos (TCP Tahoe)
+
+- Flow control window is only about endpoint
+- Have TCP estimate a *congestion window* for the network
+- Sender window = min(flow window, congestion window)
+- Separate congestion control into 2 states
+    1. Slow start: on connection startup or packet timeout 
+    2. Congestion avoidance: steady operation
+
+
+### Slow Start Benefits
+
+- Slow start 
+    - Windows starts at Maximum Segments size (MSS), or one segment
+    - Increase windows by MSS for each acknowledged packet
+- Exponentially grow congestion windows to sense network capacity
+- "Slow" campared to prior approach
+    - the name slow start might seem a bit misleading, exponential increase is much faster than additive increase. 
+    - it called slow start because it's slow in comparison to the old approach TCP.
+
+### Congestion Avoidance
+
+- Increase by MSS²/congestion windows for each acknowledgment
+- Behavior: increase by one MSS each round trip time
+- Linear (additive) increase
+
+
+### State Transitions
+
+- Two goals
+    - Use slow start to quickly find network capacity
+    - When close to capacity , use congestion avoidance to very carefully probe
+- Three signals
+    - Increasing acknowledgments: transfer is going well
+    - Duplicate acknowledgments: something was lost/delayed
+    - Timeout: something is very wrong
+
+
+![](imgs/cs144_tcp_tahoe.png)
+
+![](imgs/cs144_tcp_tahoe2.png)
+
+This figure shows an example of how TCP Tahoe is congestion windows behaves over time. 
+
+It starts with a size of 1 MSS, and increases exponentially. The first drop is response to a timeout. The window is returns to 1 MMS and begins to climb exponentially again until it reaches half of its original value , at which point it begins growing additively.
+
+If you look carefully *ssthresh* is the same value. For this simple plot, this occurs because I calculated *ssthresh* in terms of integer numbers of MSS are rounded down to the same value.
+
+Note the TCP Tahoe doesn't strickly manage congestion using AIMD. AIMD is an excellent algorithm for managing the steady-state or a stable Network. In practice TCP has to deal with a much wider range of conditions. 
+
+So the answer of the first question: 
+
+TCP sends new data when its sender window defines the minimum of its congestion  window in flow control window allows it to do so.  The congestion window is a value a sender maintains based on the acknowledgments and timeouts it observes. 
+
+------------
+
+
+
+
+
+
 
 
 
