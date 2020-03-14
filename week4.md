@@ -189,6 +189,46 @@ TCP sends new data when its sender window defines the minimum of its congestion 
 
 ------------
 
+Q: When should TCP send data retransmissions ?
+
+### Pre-Tahoe Timeouts
+
+- r is RTT estimate, initialize to something reasonable
+- m , RTT measurement from most recently acked data packet
+- average: r = αr + (1-α)m
+- Timeout = βr, β=2
+- What's the problem ?
+    - The basic problem is that it assumes that the variance of our RTT measurement is a constant factor of its value. For example, high-low variant delay ( 稳定在 80ms的海底光纤 ) , 160ms  retransmit timeout is almost an entire wasted RTT. Or imagine the opposite case where the average RTT is 20ms but has very high variance ,sometimes 80ms RTT, despite the fact that a significant fraction of packets have a high RTT, TCP would assume these packets are lost and shrink its congestion window to 1 and retransmit them.
+
+### TCP Tahoe Timeouts 
+
+- r is RTT estimates, initialize to something reasonable
+- g is the EWMA gain (e.g. 0.25)
+- m , RTT measurement from most recently acked data packet
+- Error in the estimate e = m-r
+- r = r+g·e
+- Measure variance v = v + g(|e|-v)
+- Timeout = r + βv  (β=4)
+- Exponentially increase timeout in case of tremendous congestion (if a retransmission fails)
+
+----
+
+Q: When should TCP send acknowledgments ?
+
+It turns out the answer is generally with little delay as possible. If TCP follows this policy it leads to a very important powerful behavior called self clocking.
+
+
+### Self-clocking
+
+Self-clocking means that if TCP sends acknowledgments aggressively then it turns out they will space out in time according to the throughput of the bottleneck link.
+
+
+## TCP Reno (TODO)
+
+
+
+
+
 
 
 
