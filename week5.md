@@ -12,7 +12,7 @@ NAT rewrites source IP, source port. It sets up a mapping between these (interna
     1. What packets does a NAT allow to traverse mapping ?
     2. How and when does a NAT assign mappings ?
 
-- kinds of NAT (  )
+- kinds of NAT 
     - a1 Full Cone NAT
         - reguardless the source IP
         - 穿透性最好
@@ -84,18 +84,50 @@ NAT rewrites source IP, source port. It sets up a mapping between these (interna
     - not work for symmetric NAT.
 
 
-## NAT Operation Details
+## HTTP
+
+### HTTP format
+
+![](imgs/cs144_http_format.png)
+
+- the blank means "space character"
+    - left arrow means "return"
+    - down arrow means "new line"
+- Headers
+    - `If-Modified-Since` this is a way for the client to tell the server to only give the document if it's been modified since that time. If the document has been modified since that time stamp the server responds "200 OK the new copy of the document",otherwise it responds with 304 not modified.
+        - this header is useful when your client caches pages which most web browsers do rather than transfer the same document again and again. 
 
 
+![](imgs/cs144_http_format_res.png)
 
 
+### HTTP/1.0
+
+- Open connection
+- Issue Get
+- Server closes connection after response
+
+### HTTP/1.1 Keep Alive
+
+- Added **Connection** header for requests
+    - keep-alive: tells the server "please keep this connection open,I'll request more"
+    - close:  tells the server to close the connection
+    - Server can always ignore
+- Added **Connection** header for responses
+    - keep-alive: tells the client it'll keep the connection open
+    - close: tells the client it's closing the connection
+- Added **Keep-Alive** header for responses
+    - Tells client how long the connection may be kept open. 
+
+Now the client can send further requests on the same connection. It can also open more connections, if it wants , but it doesn't have to.
 
 
+## BitTorrent
 
+BitTorrent allows people to share and exchange large files. A bittorrent client requests documents from other clients. So that single client can request from many others in parrllel. 
 
+BitTorrent breaks files up into chunks of data called pieces. When a client downloads a complete piece from another client, it then tells other clients it has that piece so they can download it too. These collections of collaborating clients are called **swarms**.
 
+### Torrent File 
 
-
-
-
-
+A client joins a swarm by downloading a Torrent file that tells it information about the file, such as how big it is, the size of its pieces, and how to start contacting other clients. 
