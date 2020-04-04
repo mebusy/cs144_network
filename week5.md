@@ -130,4 +130,79 @@ BitTorrent breaks files up into chunks of data called pieces. When a client down
 
 ### Torrent File 
 
-A client joins a swarm by downloading a Torrent file that tells it information about the file, such as how big it is, the size of its pieces, and how to start contacting other clients. 
+A client joins a swarm by downloading a Torrent file that tells it information about the file, such as how big it is, the size of its pieces, and how to start contacting other clients.
+
+- Torrent file (.torrent) describes file to download
+    - Names tracker, server tracking who is participating
+    - File length, piece length, SHA I hashes of pieces
+    - Additional metadata( who created torrent, etc.)
+    - Also specifies tracker
+- Client contacts tracker, starts communicating with peers
+- "Trackerless" torrents use something called a DHT(distributed hash table)
+    - Information on swarm stored across many nodes
+    - A distributed coordination mechanism. 
+        - Rather than use a centralized table for this lookup, the mapping is actually distributed across all the participating nodes.
+- What to say ?
+    - Peers exchange metadata on what piecies they have
+    - Download rarest pieces: rarest first policy
+    - When down to the last few pieces, ask for them from multiple peers
+
+
+## DNS
+
+### HOSTS.TXT
+
+- Originally, all hosts were in a file HOSTS.TXT, maintained by Network Information Center- Hosts periodically used a file transfer protocol to download new version
+    - Requires n² network capacity, does not scale well.
+
+### Domain Name System
+
+- Map names to addresses (more generally, values)
+- Must be albe to handle *huge* number of records
+- Must have distributed control: people can control their own names
+    - Stanford, you can manage names under Starford, but Amazon you can manage names under Amazon.
+- Must be robust to individual node failures.
+
+
+### Domain Name System Design 
+
+- Two properties make DNS design feasible
+    - Read-only or read-mostly database: hosts look up names much more often than update them. 
+    - Loose consistency: changes can take a little while to propagate
+- Two properties allow extensive caching 
+    - Look up a name, keep result for a long time , and then use it to answer other queries.
+
+### DNS Servers
+
+- Hierarchical zone ( "root" zone, edu, stanford, scs )
+- Each zone can be separately administered
+    - Stanford can grant David Mazieres the domain SCS, so it'll answer questions about SCS. But then , David can completely control all of the host names underneath SCS. 
+    - Similarly, EDU can grant Stanford the name Stanford, but then it's completely upto Stanford to manage all of the names beneath Stanford.
+- Each zone served from serveral replicated servers
+    - Rather than there's being one server that serves Stanford's name, there are in fact many servers, replicated, and there's some rules as to how they're replicated. 
+- Root zone: 13 servers, highly replicated (a,b,c,...m)
+    - Bootstrap: root server IPs are stored in a file on name server
+    - Replicated through anycast (discussed later in course)
+
+### A DNS Query
+
+- 2 types of queries
+    - Recursive
+    - Non-recursive
+    - Specified by bit in query
+- UDP port 53
+    - 512 byte message limit
+- Can use TCP port 53
+    - Prefix messages with 16-bit length field
+
+- ![](imgs/cs144_DNS_query.png)
+
+
+
+
+
+
+
+
+
+
