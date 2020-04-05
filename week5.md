@@ -197,9 +197,104 @@ A client joins a swarm by downloading a Torrent file that tells it information a
 
 - ![](imgs/cs144_DNS_query.png)
 
+### Resource Records
+
+- All DNS information represented in Resource Records (RRs):
+    - `name [TTL] [class] type rdata`
+    - name: domain name (e.g., www.stanford.edu)
+    - TTL:  time to live (in seconds)
+    - class: for extensibility, ususally In 1 (Internet )
+    - type: type of the record
+    - rdata: resource data dependent on type
+- 2 critical RR types:  A (IPv4 address) and NS(name server) records
+    - NS记录 解析服务器记录。用来表明由哪台服务器对该域名进行解析。这里的NS记录只对子域名生效。
+    - 例如用户希望由12.34.56.78这台服务器解析news.mydomain.com，则需要设置news.mydomain.com的NS记录。
+- dig tool
 
 
+```bash
+$ dig www.stanford.edu
 
+; <<>> DiG 9.10.6 <<>> www.stanford.edu
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 65468
+;; flags: qr rd ra; QUERY: 1, ANSWER: 5, AUTHORITY: 0, ADDITIONAL: 0
+
+;; QUESTION SECTION:
+;www.stanford.edu.		IN	A
+ 
+;; ANSWER SECTION:
+www.stanford.edu.	705	IN	CNAME	stanfordhs17.wpengine.com.
+stanfordhs17.wpengine.com. 300	IN	CNAME	lbmaster-90886.wpengine.com.
+lbmaster-90886.wpengine.com. 300 IN	CNAME	cluster90-elbwpeel-1jjv8xqi5kd5g-1169217295.us-east-1.elb.amazonaws.com.
+cluster90-elbwpeel-1jjv8xqi5kd5g-1169217295.us-east-1.elb.amazonaws.com. 300 IN	A 34.231.182.179
+cluster90-elbwpeel-1jjv8xqi5kd5g-1169217295.us-east-1.elb.amazonaws.com. 300 IN	A 35.175.160.108
+
+;; Query time: 6 msec
+;; SERVER: 192.168.1.1#53(192.168.1.1)
+;; WHEN: Sun Apr 05 13:38:29 CST 2020
+;; MSG SIZE  rcvd: 216
+```
+
+Besides an A record and NS record, there is something called the CNAME record, a canonical name.
+
+### CNAME Record
+
+- Canonical name record, tells you a name is an alias
+    - `name [TTL] [class] CNAME cannoical-name`
+    - Any record for canonical name can also be associated with name
+    - Example: dig www.stanford.edu
+- CNAME recludes any other RRs for name
+- Answer can have other records for canonical name 
+
+- 区别
+    - A记录就是把一个域名解析到一个IP地址（Address，特制数字IP地址），而CNAME记录就是把域名解析到另外一个域名。
+    - CNAME将几个主机名指向一个别名，其实跟指向IP地址是一样的，因为这个别名也要做一个A记录的。但是使用CNAME记录可以很方便地变更IP地址。
+
+
+### MX Records
+
+Anothe kind of DNS record is MX record.
+
+- Mail eXchange record -- tells you mail server for a domain
+    - 用于将以该域名为结尾的电子邮件指向对应的邮件服务器以进行处理
+    - `name [TTL] [class] MX preference mail-server-name`
+- Can't ping scs.stanford.edu, but you can send email to scs.stanford.edu
+- MX records cause A record processing for mail-server-name
+- Example: dig mx scs.stanford.edu
+- What if mail-server-name does not have an A record ?
+    - dig mx bad-mx.scs.stanford.edu
+
+### Many Other kinds of Records
+
+- SOA: Start of Authority
+- TXT: arbitrary text (great for extensions)
+- PTR: map address to name (PTR: pointer ?)
+- AAAA: IPv6 address records
+
+
+## DHCP
+
+### Communicating with IP
+
+- Need 3 things ( plus one)
+    - IP address
+    - Subnet mask
+    - Gateway router
+        - if the target node in not on the local subnet, what's the IP addrees of the next/first hop towards destinations outside of the local subnet. 
+    - A DNS server IP address is also useful ( but not necessary for IP )
+- Problem: how do we get these values ?
+
+
+### DHCP
+
+- Dynamic Host Configuration Protocol , RFC 2131
+- A machine can request configuration from a DHCP server
+    - Movement: just request configuration again
+    - Configuration has a duration: a "lease", which can be renewed
+    - Garbage collection: when lease expires
+- Discover(client,broadcast), offer(server), request(client), ack(server), release
 
 
 
