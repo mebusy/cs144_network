@@ -98,7 +98,29 @@ There's a fairly simple fix to this.
 
 ## Link State Protocol: Dijkstra's shortest path first algorithm
 
+In this video I'm going to tell you about the link state algorithm, in particular Dijkstra's Shortest-Path first algorithm. This is an example of a link-state protocol where the router start flooding to each other the all the information about the topology of the network: whick links are there, which links are up, which ones are down. And then from there each router is going to calculate its shortest path tree from it to every other router. 
 
+### Dijkstra's shortest path first algorithm ( example of a "Link State Algorithm")
+
+1. Exchange link state: A router floods to every other router the state of links connected to it.
+    - In other workds , they're going to learn the topology of the network by exchanging with each other the state of the links connected to each router. So every router has a full topology map. 
+    - Periodically
+    - When link state changes
+2. Run Dijkstra: Each router independently runs Dijkstra's shortest path first algorithm. 
+
+At the end each router finds min-cost spanning tree to every other router. 
+
+
+Questions:
+
+1. How long does the algorithm take to run ?
+    - By the end of the kth iteration, we've added K routers to the graph.
+2. What happens when link costs change, or when routers / links fail ?
+    - every time there's a change in the link state (up or down), the routers are going to flood that state to every other routers in the network. 
+    - They then rerun Dijkstra's algorithm, calculate the lowest cost spanning tree from scratch. 
+
+
+## Internet (RIP,OSPF) AS's
 
 
 
