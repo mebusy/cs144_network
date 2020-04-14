@@ -122,6 +122,63 @@ Questions:
 
 ## Internet (RIP,OSPF) AS's
 
+- Outline
+    - Hierarchy and Autonomous System (AS)
+    - Interior Routing Protocols
+        - within those autonomous systems, how we use the distance vector and link-state algorithms
+    - The structure of the Internet
+
+![](imgs/cs144_hierarchy.png)
+
+
+### Autonomous Systems 
+
+- The basic unit of hierarchy in the Internet
+    - Within an AS, the owner decides how routing is done
+    - Between AS's, must use BGP-4 (Border Gateway Protocol, v4)
+- Finding and AS number
+    - Query DNS to find IP address at Stanford: `dig stanford.edu`
+        - Returns: "stanford.edu  1800 IN A 171.64.13.26"
+    - Find AS for IP address: `nc whois.cymru.com 43`
+        - Enter: 171.64.13.26
+    - Stanford(32), AT&T(797), Google(15169,22859,36039)
+    - `traceroute -a <destination>`  will report AS numbers.
+
+### Interior Routing Protocols
+
+- RIP(Routing Information Protocol)
+    - Use distance vector (distributed Bellman-Ford algorithm)
+    - Internet RFC 2453
+    - Updates send every 30 seconds
+    - No authentication for updates
+    - Originally in BSD UNIX, routed
+    - Widely used for many years; used less now.
+
+- OSPF
+    - Link-state updates sent(using flooding) as and when required
+    - Internet RFC 2328
+    - Every router runs Dijkstra's algorithm
+    - Authenticated updates
+    - Autonomous system may be partitioned into "areas".
+    - Widely used, complex.
+    - IS-IS(RFC 1142) is similar, and is also widely used.
+
+### Routing to a single exit point 
+
+- There is only one exit point, so routers within the AS can use default routing
+    - Each router knows all prefixes within AS
+    - Packets from another AS are sent to the default router
+    - Default router is the border gateway to the next AS.
+- Routing tables in single exit AS's tend to be small.
+    - because each router only needs to hold the addresses for the prefixes within its autonomous system. Otherwise it just forwards them out. Nice and easy.
+
+
+
+
+
+
+
+
 
 
 
