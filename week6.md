@@ -173,9 +173,40 @@ Questions:
     - because each router only needs to hold the addresses for the prefixes within its autonomous system. Otherwise it just forwards them out. Nice and easy.
 
 
+### Routing to multiple exit points
+
+- Used by multi-homed enterprises and transit AS's.
+- Each internal router must be told which exit point to use for a given destinantion prefix.
+    - That means when it sees a prefix which is not inside the autonomous system, it has to know which exit point to use. 
+- Requires large routing tables to route to every prefix. 
+- This can can actually be made a little simpler if the autonomous system uses what's called hot-potato routing. 
+
+- Approach 1: Hot-potato routing -- send to closest exit.
+    - Instead of making a smart choice , it simply sends to the closest exit point. 
+Approach 2: Pick exit closest to destination.
+    - The more elaborate way would be to pick the exit, which is closest to the destination, or is on the lowest cost path.
 
 
+### Exterior Routing Protocol
 
+- Every AS must interconnect to other AS using BGP-4
+    - just like we're required to use IP, in order to deliver our packets, the thin waste of routing protocols is BGP4. 
+- Problems BGP-4 designed to solve
+    - **Topology**: The internet is a complex mesh of different AS's with very little structure.  It's very unstructured interconnection mesh.
+    - **Autonomy of AS's**: Each AS defines link costs in different ways, so not possible to find lowest cost paths. 
+        - we're simply going to have to find a set of paths based on the number of autonomous systems. 
+    - **Trust**: Some AS's don't trust others to advertise good routes(e.g. 2 competing backbone providers), or to protect the privacy of their traffic(e.g. 2 warring nations.)
+    - **Policies**: Different AS's have different objectives (e.g. route over fewest hops; use one provider rather than another ).
+
+- BGP-4 is designed to work in a way that will allow for that policy to be a local, private matter for the autonomous system. 
+
+### Summary
+
+- The Internet consist of multiple AS's each managed independently.
+- An AS runs its own interior routing protocol.
+- Stub AS's use simple default routing 
+- AS's with multiple exits must decide the best exit.
+- AS's must connect using the BGP-4 protocol.
 
 
 
