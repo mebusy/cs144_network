@@ -209,6 +209,65 @@ Approach 2: Pick exit closest to destination.
 - AS's must connect using the BGP-4 protocol.
 
 
+## Routing BGP (Border gateway protocol)
+
+- BGP is not a link state or a distance vector routing protocol. 
+    - Instead, it uses what's called a path vector. 
+- BGP routers advertise complete paths ( that path is a list of AS's passed through in order to reach a particular destination prefix.)
+    - Also called AS_PATH (this is the path vector)
+    - Example of path advertisement:
+        - "The network 171.64/16 can be reached via the path(AS1,AS5,AS13)".
+        - So that might be an example of advertisement that the BGP might advertise to one of its neighbors. 
+
+- The consequence of sending out a path, is that paths with loops are easily detected locally, and you can simply remove those , or just completely ignore those advertisements.
+- Perhans the most important feature of BGP is that local policies that are private and secret to a particular AS, can pick the preferred path among those that advertised to it. 
+    - So, if a number of neighboring AS advertise different paths to reach the same prefix, then the local policy can pick whichever one it chooses. whichever one it wants. 
+- When a link/router fails, the path is "withdrawn".
+
+
+### Provider and Customer
+
+**The peering Relationship**
+
+![](imgs/cs144_6_peer_relationship.png)
+
+In general , a peer cannot be a transit for its other peers.  In other words, the black-dotted path is not allowed because it's going through the middle peer.
+
+That's because typically the relationship here between 2 peers is settlement free. So peers do not provide transit between 
+
+![](imgs/cs144_6_bgp_route.png)
+
+---
+
+## Routing -- Multicast Routing
+
+### Multicast 
+
+- Techniques and Principles
+    - Reverse Path Broadcast (RPB) and Rruning
+    - One versus multiple trees
+- Practice
+    - IGMP -- group management
+    - DVMRP -- the first multicast routing protocol
+    - PIM -- protocol independent multicast
+
+### Flooding
+
+We already saw one way in which packets could be delivered to a large number of hosts with a rather simplisitc  approach of flooding.
+
+If we use flooding as an approach, form A to reach B, then packets from A could simply be replicated at each router along the path by sending tou every interface except the one through which the packet arrived. 
+
+The basic problem in the flooding is that when there are loops in the topology, packets can loop forever.
+
+![](imgs/cs144_6_flooding_loop.png)
+
+We saw in the spanning tree protocol how these loops were broken. We can look a different way they can be avoided in the first place.  That approach is called Reverse Path Broadcast (RPB), aka Reverse Path Forwarding (RPF)
+
+### Reverse Path Broadcast (RPB)
+
+
+
+
 
 
 
