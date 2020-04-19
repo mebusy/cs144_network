@@ -265,8 +265,53 @@ We saw in the spanning tree protocol how these loops were broken. We can look a 
 
 ### Reverse Path Broadcast (RPB)
 
+This is the basis for the early multicast methods that we used in the internet. 
 
+RPB builds on a very simple observation and that observation is that before A has even started sending multicast, the network will have already built a unicast minimum cost spanning tree covering all of the hosts that A can reach. 
 
+For example, R₁ already knows what the minimum cost spanning tree is for all of the packets going towards A. 
+
+![](imgs/cs144_6_rpb_01.png)
+
+So A can use that as a loop-free method in order to deliver packets to everybody else.  So first let me describe the broadcast case which is like flooding but without the loop packets lasting forever. Imaging now that A is sending a packet to everybody else. And that packet is going to have a group address corresponding to who it's sending to, it'll also have the source address A in it.
+
+```
+········| A | G |
+```
+
+And because that packet comes from A, the routers at each hop along the way can ask the question , is the interface over which this packet arrives ?  Is it on the shortest path spanning tree from me to A ? 
+
+So, it looks up the address, the source address in its table , and it's going to look that up in its forwarding table. if this is the interface through which it would send a unicast, then it will accept it and send it out every other interface. 
+
+![](imgs/cs144_6_rpb_02.png)
+
+Likewise, when it gets to R₂, R₂ will ask the same question.
+
+![](imgs/cs144_6_rpb_03.png)
+
+So it's a little bit like flooding but its asking a more detailed question, is this the interface through which I would send it if it was a unicase packet going to A?
+
+R₃ will also ask the same question, and it would say, yes this is the interface through which I would send ti to A so therefore, I'm going to send it out all of the others. However when this packet reaches R₂, R₃->R₂ is not on the green shortest path tree back to A. So therefore, R₂ will drop that packet. 
+
+![](imgs/cs144_6_rpb_04.png)
+
+Same thing will happn over here at R₈, the packet will be dropped. 
+
+There in fact will be no loops because packets will follow that spanning tree that is already being built. 
+
+This is sort of a clever idea that you can see why its called reverse path broadcast because its using the spanning tree that is in the opposite direction. 
+
+Now this is all very well as a means for broadcast but we're talking about multicast. In this particular case , the packet would've been delivered to all of the end hosts.   Whereas in fact we wanted it to be delivered to every end host except D.  So as a simple extension to this, there is something called pruning , and usually referred to reverse path broadcast plus pruning, RPB plus pruning, in which those routers that don't have any connected hosts interested in receiving the packets, so in our case D is not part of the multicast group, so R₆ would send what's called a prune message and say, hey, I actually don't have any end hosts interested in receiving this, please don't send me multicast packets for group address *G* anymore. And so , it will prune G and say I have no interest in this. 
+
+![](imgs/cs144_6_rpb_05.png)
+
+So in this case this would then be removed from the reverse path broadcast tree and now that tree will only reach the end hosts that are interested in it. 
+
+### Summary  RPB + Pruning 
+
+1. Packets delivered loop-free to every end host.
+2. Routers with no interested hosts send prune message towards source
+3. Resulting tree is the minimum cost spanning tree from source to the set of interested hosts.
 
 
 
