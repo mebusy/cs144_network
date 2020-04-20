@@ -12,9 +12,9 @@ https://cs144.github.io
 
 
 
+----
 
-
-[QA](QA.md)
-
+- [QA](QA.md)
+- [IPv6](IPv6.md)
 
 

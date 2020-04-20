@@ -1,6 +1,44 @@
 
 # Week6 Routing
 
+## Summary
+
+How should packets from A reach B ?  Or in the multicast case how should packets from A reach B,C,etc... .
+
+- Approaches
+    1. Flooding
+        - very inefficient and expensive
+        - flooding is used during times of uncertainty, when the topology is changing and we have no other way to be sure we can reach every other host. For example , when OSPF routers are exchanging link state, they flood the link state packets throughout the OSPF domain, so the topology is known to every router even when it has changed.
+    2. Source routing 
+        - in practice rarely used, biggest reason is the security
+    3. Forwarding table
+        - The routers can contain forwarding tables. 
+        - Today, all Ethernet switches and Internet router use forwarding tables.
+    4. Spanning tree
+        - unicast routing algorithms usually build a spanning tree
+
+
+Generally speaking , routing algorithms used in the Internet, such as OSPF and RIP, populate the forwarding tables so as to create a spanning tree across the network.
+
+
+- Algorithms to build the forwarding tabels in routers
+    1. Bellman-Ford “distance vector” algorithm. Used by RIP. 
+        - Rarely used today.
+    2. Dijkstra's shortest path first “link-state” algorithm. Used by OSPF.
+
+- In addition to RIP and OSPF, 4 othe aspects of internet routing
+    1. Hierarchical routing 
+    2. BGP -- path vector routing and local policies
+        - the only sanctioned way to exchange routing information between AS in the internet today.
+    3. Multicast routing
+        - not widely used today. 
+    4. Spanning Tree Protocol (STP) 
+        - is NOT actually an Internet routing mechanism, but the mechanism used by Ethernet networks to avoid creating loops.
+
+
+-------------------------------------------------------
+
+
 ## The Basics
 
 - Approaches 
@@ -400,7 +438,7 @@ So in this case this would then be removed from the reverse path broadcast tree 
 ---
 
 - Root port: The port on a switch that is closest to the Root.
-    - picked on every swith
+    - picked on every switch
 - Designated port: The port neighbors agree to use to reach the Root.
     - It's essentially the port through which eventually packets had destined to the root will be received at this switch. 
     - And packets coming from the root will be forwarded onto this port in order to reach the other switches.
@@ -408,13 +446,4 @@ So in this case this would then be removed from the reverse path broadcast tree 
 
 
 2012, A new standard for Ethernet switches was introduced Shortest-Path Bridging(SPB, or 802.1aq). It is a link-state protocol like OSPF.
-
-
-
-
-
-
-
-
-
 
