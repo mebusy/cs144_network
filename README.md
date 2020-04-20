@@ -8,6 +8,7 @@ https://cs144.github.io
 - [3. Packet Switching](week3.md)
 - [4. TCP](week4.md)
 - [5. NAT,HTTP,DNS](week5.md)
+- [6. Routing](week6.md)
 
 
 

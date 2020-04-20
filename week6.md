@@ -247,6 +247,7 @@ That's because typically the relationship here between 2 peers is settlement fre
     - Reverse Path Broadcast (RPB) and Rruning
     - One versus multiple trees
 - Practice
+    - Multicast addresses
     - IGMP -- group management
     - DVMRP -- the first multicast routing protocol
     - PIM -- protocol independent multicast
@@ -312,6 +313,106 @@ So in this case this would then be removed from the reverse path broadcast tree 
 1. Packets delivered loop-free to every end host.
 2. Routers with no interested hosts send prune message towards source
 3. Resulting tree is the minimum cost spanning tree from source to the set of interested hosts.
+
+### Addresses and joining a group 
+
+- IPv4: class D addresses are set aside for multicast
+    - class D are 16 bits so there are 2¹⁶ different multicast addresses.
+    - And the don't correspond to a particular location on the topology like a unicast address does. They refer to a group.  So every recipent of packets within a group will receive packets with the same multicast address. 
+- IGMP (Internet group management protocol)
+    - We also need a way for hosts to indicate their interest in joining our group. One of the interesting things about multicast is that generally the source dose not need to know who the packets are being delivered to. It's the network, it's the tree that figures that out. 
+    - So, each of the leaves of the tree, each of the hosts needs to indicate an interest in receiving packets and it does this by IGMP, RFC3376.
+    - IGMP is the protocol that runs between the end host and its directly attached router. 
+    - Hosts periodically ask to receive packets belonging to a particular multicast group.
+        - In fact, the routers will probe or will send out a request to all of the hosts connected to them and say, what multicast groups are you interested in? And then the hosts will respond and will say which groups they want to receive from.  And if they don't receive any reply after a while, then the membership times out.
+
+
+### Multicast routing in the Internet 
+
+- DVMRP 
+    - Distance vector multicast routing protocol (RFC 1075)
+    - First Internet routing protocol
+    - Uses RPB + Prune
+- PIM
+    - Protocol Independent Multicast
+    - 2 modes: dense mode, sparse mode
+    - Dense mode(RFC 3973): Similar to DVMRP
+    - Sparse mode(RFC 4601): Builds rendezvous points through which packets join small set of spanning trees.
+
+### Multicast in practice 
+
+- Multicast used less than originally expected
+    - Most communications is individualized (e.g. time shifting)
+    - Early implementations were inefficient 
+    - Today, used for some IP TV and fast dissemination.
+    - Some application-layer multicast routing used.
+
+---
+
+## Spanning Tree Protocol
+
+- Outline
+    - Ethernet "router" packets too
+    - We know how addresses are learned, but how are loops prevented ?
+    - Ethernet switches build a spanning tree over which packets are forward.
+        - instead of building a spanning tree per destination , or per router, in Ethernet we're going to build a single spanning tree for the entire network.
+
+### Recall:  Ethernet Switch
+
+1. Examine the header of each arriving frame.
+2. If the Ethernet DA is in the forwarding table, forward the frame to the correct output port(s)
+3. If the Ethernet DA is not in the table, broadcast the frame to all ports(except the one through which the frame arrived)
+4. Entries in the table are learned by examining the Ethernet SA of arriving packets.
+    - Learning could lead to loops , we need to make sure that doesn't happen
+    - The spanning tree protocol was invented to solve this problem.
+        - rather than deciding how we router along a spanning tree for each address, or to reach each destination, it's going to build one spanning tree for the entire network. 
+
+### Preventing loops: Spanning Tree Protocol
+
+- The topology of switches is a graph
+- The Spanning Tree Protocol finds a subgraph that spans all the vertices without loops.
+    - Spanning: all switched are include 
+    - Tree:  no loops
+- The distributed protocol decides:
+    1. Which switch is the Root of the tree, and 
+    2. Which ports are allowed to forward packets along the tree
+
+### How it works
+
+1. Periodically, all switches broadcast a "Bridge Protocol Data Unit" (BPDU)
+    - The BPDU contains 3 pieces of information
+        - *ID of sender*, usually actually derived from the MAC address, and it may be manually configured by the administrator
+            - normally , 2 bytes priority + 6 bytes ID
+        - *ID of root*, of who it currently believes to be the root
+        - *distance* from sender(itself) to root
+2. Initially, every switch claims to be Root, sets distance field to 0.
+3. Every switch broadcasts until it hears a "better" message 
+    - A root with a smaller ID
+    - A root with equal ID, but with shorter distance
+    - Ties broken by smaller ID of sender.
+4. If a switch hears a better message, retransmit message (add 1 to distance)
+
+
+- Eventually: 
+    - only the root originates configuration messages (others retransmit them).
+    - Locally, switch only forward on ports.
+
+---
+
+- Root port: The port on a switch that is closest to the Root.
+    - picked on every swith
+- Designated port: The port neighbors agree to use to reach the Root.
+    - It's essentially the port through which eventually packets had destined to the root will be received at this switch. 
+    - And packets coming from the root will be forwarded onto this port in order to reach the other switches.
+- All other ports are blocked from forwarding (but still send/receive BPDUs)
+
+
+2012, A new standard for Ethernet switches was introduced Shortest-Path Bridging(SPB, or 802.1aq). It is a link-state protocol like OSPF.
+
+
+
+
+
 
 
 
