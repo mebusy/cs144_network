@@ -64,3 +64,31 @@
     - TCP 协议拆分数据是为了保证传输的可靠性和顺序，作为可靠的传输协议，为了保证数据的传输顺序，它需要为每一个数据段增加包含序列号的 TCP 协议头，如果数据段大小超过了 IP 协议的 MTU 限制， 就会带来更多额外的重传和重组开销，影响性能。
     - UDP 协议的数据报不应该超过 MTU - 28 字节，一旦超过该限制，IP 协议的分片机制会增加 UDP 数据报无法重组的可能性
 
+# Difference of Hub / Switch / Router 
+
+
+device | usage | network
+--- | ---  | --- 
+hub/switch | used to create networks | LAN-WAN 
+router | used to connect networks  | WAN-WAN
+
+
+- Hubs and Switches are used to exchange data within a local area network.
+    - Not used to exchange data outside their own network.
+- To exchange data outside their own network, a device needs to be able to read IP address.
+- Router cat route or forward data from 1 network to another based on their IP address. 
+    - When a data packet is received from the router,  the router inspects the packet's IP and determines if the packet was meant for its own network or if it's meant for another network. 
+    - A router is essentially the Gateway of a network. 
+
+
+device | how to work | network
+--- | ---  | --- 
+Hub | only detects that a devices is physically connected to it
+Switch | cat detect specific devices that are connected to it.  keeps a record ot the MAC 
+
+- Hub
+    - 把几台机器，连接到局域网内，  任意时刻有 packet 到达hub端口，hub只会简单的复制它 并转发到所有的端口。
+- Switch
+    - can learn the physical addresses （MAC) of the devices connected to it, and stores these physical addresses.'
+    - when a data packet is sent to a switch, it's only directed to the intended destination port, unlike a hub where hub will just broadcast data packet to every port.
+
