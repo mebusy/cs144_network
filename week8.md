@@ -85,7 +85,30 @@ First she sends a broadcast ARP request packet to the ARP server, which replies 
 
 But if the attacker  sets up a rogue ARP server that responds faster than the legitimate ARP server, the attacker can give Alice the wrong information. If the attacker replies with the ethernet address of a rogue server in the local network, then all of Alice's traffic will be sent to the rogue server. This is an easy way to setup a man in the middle attack. 
 
+## 8.2 Demo Attack
 
+- Alice 10.0.0.1
+- Bob   10.0.0.2
+- Evil  10.0.0.3
+
+```bash
+# alice is ping Bob
+ping 10.0.0.2
+
+# evil can see any traffic
+tcpdump -n host 10.0.0.1
+
+# now evel run a script to 
+# filling up the forward table 
+# Alice's packet start broadcast...
+```
+
+---
+
+DHCP attack ...
+
+
+## 8.3 Layer 3 Attacks
 
 
 
