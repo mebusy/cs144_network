@@ -110,6 +110,13 @@ DHCP attack ...
 
 ## 8.3 Layer 3 Attacks
 
+1. Use ICMP to tell source end-host to redirect traffic
+    - Send ICMP redirect messages to source host
+    - recall: ICMP is used to convey information from the network back to source, telling it how the network is doing. 
+
+2. BGP hijacking 
+    - BGP attacks take advantage of the fact that neighboring ISPs trust one another to provide accurate information about the AS path to follow in order to reach the destination prefix. 
+    - 1:05
 
 
 
