@@ -116,11 +116,110 @@ DHCP attack ...
 
 2. BGP hijacking 
     - BGP attacks take advantage of the fact that neighboring ISPs trust one another to provide accurate information about the AS path to follow in order to reach the destination prefix. 
-    - 1:05
+    - ISP advertise prefix belonging to someone else; capturing their traffic
+    - ISP advertise invalid ISP path, creating "black hole" for traffic
+    - requires masquerading as ISP, or taking over BGP TCP session.
+
+3. More specific prefix.
+    - Insert more specific prefix to divert a portion of an address space.
+    - requires masquerading as ISP, or taking over BGP TCP session.
 
 
+### ICMP Redirect
+
+![](imgs/cs144_icmp_redirect.png)
+
+Alice is connected to her company's network which is connected to the public internet via Router 1. Alice wants to send a packet to her colleague Bob who works at the same company. They connected via the company's private network. 
+
+Alice's computer is configured with router 1 as the default router. In other words packets destined for different subnet will be sent via router 1. But actually her packets to Bob should really go via router 2 instead. 
+
+When the packet arrives to router 1, it notices the packet is routed back to the interface it arrived on. This tells router 1 that Alice sent the packet to the wrong router. So router 1 forwards the packet to router 2, and then sends an ICMP redirect message to Alice to tell her to send packets to Bob via router 2 in future. 
+
+Alice's computer adds a new routing entry in its local routing table.  Next time Alice has a packet for Bob her computer sends it to router 2 instead. 
+
+This is how ICMP redirects are supposed to work. 
+
+The attacker can send an ICPM redirect message to tell her to route packets to `prefix-A` via the attacker's computer instead. 
 
 
+### BGP Attacks
+
+- Security vulnerabilities in BGP
+    1. An AS can advertise IP address it doesn't own
+    2. An AS cannot verify that an ASpath is correct
+    3. ISPs exchange BGP message over a regular TCP session
+- Almost any ISP can bring down the Internet
+    - accidentally or maliciously 
+
+
+### Some Examples
+
+- 2008: Pakistan Telecom
+    - tried to block access to YouTube
+    - inadvertently propageted false BGP advertisements
+- 2004: Turkish ISP -- TTNet
+    - TTNet sent full BGP routing table; best path via Turkey to everywhere
+    - Almost entire Internet routed via Turkey
+    - Most of Internet inoperational for several hours
+- 2008: Brazil
+    - CTBC sent full BGP routing table that almost hijacked other carriers
+    - Luckily, a BGP monitor noticed in time
+    - Believed by many to be malicious (to block Yahoo).
+
+### BGP Hijacking
+
+![](imgs/cs144_bgp_hijack.png)
+
+Alice in AS1 sends her packets to Bob who is attacked to prefix A somewhere in AS3. 
+
+Alice's neighboring AS, AS2, advertises correctly that the best path to Bob is via AS2. 
+
+The Attacker has a different idea. The attacker is able to take over and control the BGP in AS Evil. Once the attacker has control over the BGP sessions between AS Evil and AS2 , it can advertise new false ASpath.   For example it can advertise a path saying that the 171.64/16 can be reached via AS Evil instead.
+
+AS1 is no way of knowing that this is a lie and so might start routing traffic to AS Evil instead. 
+
+
+## 8.4
+
+### Denial of Service
+
+- In Feb. 2000, Yahoo's router kept crashing
+    - Engineers had problems with it before, but this was worse
+    - Turned out they were being flooded with ICMP echo replies
+    - Many DDoS attacks followed against high-profile sites
+- Basic Denial of Service attack
+    - Overload a server or network with too many packets
+    - Maximize cost of each packet to server in CPU and memory
+- Distributed Dos (DDos) particularly effective:
+    - Penetrate many machines in semi-automatic fashion
+    - Make hosts into "zombies" that will attack on command
+    - Later start simultaneous widespread attacks on a victim
+
+
+### DoS attack overview
+
+- Class of attacks that just target availability
+- Many motivations for Denail of Service (DoS)
+    - Extortion
+    - Revenge -- Spammers permanently shut down anti-spam company Blue Security
+    - Bragging rights
+- Can DoS at many different layers
+    - Link, Network, Transprot, Application, ...
+
+### Warm up: simple DoS attacks
+
+- Jam a wireless network at physical layer
+    - Simple, maybe even with off-the-shelf cordless phone
+- Exploit NAV structure at 802.11 link layer
+    - NAV (Net Allocation Vector) used to suggest when network may be free( e.g. "after RTS/CTS exchange")
+    - Use to reserve net repeatedly for max number of seconds 
+        - at that point, no one will end up transmitting, you have effectively disabled that wireless network.
+- Flooding attack -- e.g., flood ping
+    - `ping -f ...`
+- Amplification can make attacks more powerful than resources directly available to attacker
+
+
+4:39
 
 
 
