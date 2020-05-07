@@ -218,8 +218,13 @@ AS1 is no way of knowing that this is a lie and so might start routing traffic t
     - `ping -f ...`
 - Amplification can make attacks more powerful than resources directly available to attacker
 
+### TODO
 
-4:39
+---
+
+## 8.5 Security Principles
+
+
 
 
 
