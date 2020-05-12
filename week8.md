@@ -224,11 +224,76 @@ AS1 is no way of knowing that this is a lie and so might start routing traffic t
 
 ## 8.5 Security Principles
 
+1. Confidentiality
+2. Integrity
+3. Availability
+
+### Basic problem
+
+- To first approximation, attackers control the network
+    - can snoop, replay, suppress, send
+- How do we defend against this ?
+    - Communication securely despite insecure networks -- cryptography
+    - Secure small parts of network despite insecurity of wider network
+    - Design systems to scale well in response to attacks
+        - 
+- Two approaches: cryptography and scalable system design
 
 
+### Cryptography
+
+- Confidentiality
+    - I want to tell you someting secretly, so no-one else knows what I said
+    - Perfect confidentiality: one-time pad
+        - You and I share a prefectly random key of 0s and 1s, K, nobody else has it
+        - I XOR my message M with K, producing C, send C to you(C=M⊕K)
+        - you XOR C with K, reconstructed M (M=C⊕K)
+    - Advantages: informationally theoretic secure and fast
+        - Given any C, and M is equally likely
+    - Disadvantage: need a K as long as all data I might ever send
+- Integrity
+    - I want to make sure you received my message unchanged/untampered
+    - I want to make sure you sent the message
+    - Crytographic hash: H(M)
+    - Message authentication code: MAC(M,K)
+        - use key K to generate MAC(M,K), use K to check MAC(M,K)
+- Authenticity
+    - I want to be sure you are whom you say you are.
+    - We've exchanged a secret K beforehand: MAC("This is the...",K)
+    - If we haven't: chain of trust
+        - We can trust Verisign by design(root of trust)
+        - Verisign says "here's a secret for Stanford"
+        - Standford says "here's a secret for the provost"
+
+### High Availability Design
+
+- Denail of service (Dos), Distributed Denail of Service (DDoS)
+- Many kinds of attacks, many defenses
+    - Replication (scale-out)
+    - Keeping costs symmetric
+    - Upstream filtering(stop letting those pings through, router!)
+- Continual arms race: not going to talk much about it.
 
 
+## 8.6 Confidentiality
 
+- Symmetric Encryption 
+    - Examples: AES, Blowfish, DES, RC4
+- One-Time pad
+    - generally impractical
+    - why it called one-time pad ?
+        - because if you use same K encrypt 2 messags, then
+        - C1 = K⊕M1, C2 = K⊕M2
+        - C1⊕C2 =(K⊕M1)⊕(K⊕M2) = M1⊕M2 , it leaks some informations about M1 and M2
+
+- Idea: Computational Security
+    - So one-time pads are generally impractical. Instead what we want is a cryptosystem where we can distribute a small K, say 128 or 256 bits. 
+    - Use K to encrypt much large M.
+    - Given C=E(K,M), may be only one possible M. 
+
+- Ciphers
+    - Stream ciphers: pseudo-random pad
+    - 1:06
 
 
 
