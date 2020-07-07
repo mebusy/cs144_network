@@ -275,7 +275,7 @@ AS1 is no way of knowing that this is a lie and so might start routing traffic t
 - Continual arms race: not going to talk much about it.
 
 
-## 8.6 Confidentiality
+## 8.6 Confidentiality (TODO)
 
 - Symmetric Encryption 
     - Examples: AES, Blowfish, DES, RC4
@@ -294,6 +294,31 @@ AS1 is no way of knowing that this is a lie and so might start routing traffic t
 - Ciphers
     - Stream ciphers: pseudo-random pad
     - 1:06
+
+
+## 8.7 Integrity
+
+- Secrecy Is Not Enough
+    - Encryption protects someone from reading plaintext
+    - An adversary can still modify messages
+- Integrity: protecting message from tampering and modificaiton
+- Confidentiality without integrity is rare(and a sign of a poor design), while integrity without confidentiality is common
+
+### Two Integrity Example
+
+- Cryptographic hashes
+    - Way to verify that data has not been modified
+    - Requires no secrets: anyone can generate one
+    - Useful in data storage
+- Message authentication codes (MACs)
+    - Way to verify that data has not been modified
+    - Also verifies generator has secret key: authenticity
+    - Useful in networks
+
+
+
+
+
 
 
 
