@@ -1,7 +1,7 @@
 
 # lab0
 
-- Q:
+- complie error on Centos7
     ```
     /usr/include/linux/if.h:211:19: error: field 'ifru_addr' has incomplete type 'sockaddr'
     ```
@@ -11,7 +11,7 @@
 
 <details>
 <summary>
-webget
+webget impl
 </summary>
 
 ```cpp
@@ -54,7 +54,7 @@ void get_URL(const string &host, const string &path) {
 }
 ```
 
-<details>
+</details>
 
 
 
