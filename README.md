@@ -17,5 +17,4 @@ https://cs144.github.io
 
 - [QA](QA.md)
 - [IPv6](IPv6.md)
-
-
+- [lab note](lab_note.md)
