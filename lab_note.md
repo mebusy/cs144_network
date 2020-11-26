@@ -60,5 +60,23 @@ void get_URL(const string &host, const string &path) {
 </details>
 
 
+# lab1
+
+- TCP implementation managed to produce a pair of reliable in-order byte streams (one from you to the server, and one in the opposite direction), even though the underlying network only delivers “best-effort” datagrams. By this we mean: short packets of data that can be lost, reordered, altered, or duplicated.
+    - **re-submitted package may merge serveral raw packages.**
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
