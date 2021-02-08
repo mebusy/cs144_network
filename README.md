@@ -4,6 +4,7 @@ https://cs144.github.io
 
 
 - [1. Link Layer, Network Layer](week1.md)
+    - [how do data transfer through wire](https://github.com/mebusy/notes/blob/master/dev_notes/network_data_transfer.md)
 - [2. Transport Layer](week2.md)
 - [3. Packet Switching](week3.md)
 - [4. TCP](week4.md)
