@@ -1,5 +1,39 @@
+...menustart
+
+- [week1 Link/Network Layer](#2d218f811a5aa1a28aa20333d7716678)
+    - [1.2 The 4 Layer Internet Model](#9ea144fd4462f959e3a778ea7e0097e0)
+        - [The network layer is "special"](#d7f2704a0f482c7b5d8659b60aba3ca6)
+        - [Summary](#290612199861c31d1036b185b4e69b75)
+    - [1.3 The IP service model](#b138e49ee82925033b4cadd1e1875a26)
+        - [The Internet Protocol (IP)](#2b9909937987ceb9cd0ce175a3d0ecee)
+        - [The IP Service Model](#d3615b48224a3e32af124d7fda942eb8)
+        - [Why is the IP service so simple ?](#52ab6781a62a29cf194ddc5e9119b41a)
+        - [The IP Service Model (Details)](#b06d2b103367d478d73385a5987955bb)
+        - [IPv4 Datagram](#98ba832534d52f2eeb1f55639c2b3b54)
+    - [1.4 Life of a Packet](#90ce373cead78597b4eab07d595855f2)
+        - [TCP Byte Stream](#515b8aa95d3218601bb8d3e9f1b078af)
+        - [Inside Each Hop](#7b37e06919b4cb0339448961e30338df)
+        - [Under the Hood](#97b85ec6773a0a4d9d4e12c24e3d803f)
+    - [1.5 Packet switching principle](#0c0238af5d854a169c4ba62e3efaed73)
+        - [Two consequences](#e53a4db9876609340e93b5a5fcb15d35)
+        - [Data traffic is bursty](#b33f4942f36f0a4483e5284ce9858f99)
+    - [1.7 Encapslation principle](#911bffd13f4b41279e0fce79091246b9)
+    - [1.8 Byte Order](#272462a8932363871c7f5992f2f6faf9)
+        - [Portable Code](#4affcd52f209587a2c07eea129309e0b)
+    - [1.9 IPv4 address](#6ca7eb23164d497058e7d6d9be89f953)
+    - [1.11 Address Resolution Protocol (ARP)](#4a0ba9c9c27b58384a4dd32e6b85cc19)
+    - [1.12](#b12cb2f95b2516af000240d2ebc65c26)
+
+...menuend
+
+
+<h2 id="2d218f811a5aa1a28aa20333d7716678"></h2>
+
 
 # week1 Link/Network Layer
+
+<h2 id="9ea144fd4462f959e3a778ea7e0097e0"></h2>
+
 
 ## 1.2 The 4 Layer Internet Model 
 
@@ -23,6 +57,9 @@ The Internet is made up of end-hosts, links and routers. Data is delivered hop-b
     - BitTorrent, Skype, www ... 
 
 
+<h2 id="d7f2704a0f482c7b5d8659b60aba3ca6"></h2>
+
+
 ### The network layer is "special"
 
 We must use the Internet Protocol (IP)
@@ -34,6 +71,9 @@ If an application wants a guarantee that its data will be retransmitted when nec
 
 This is the job of the Transport Layer ...
 
+<h2 id="290612199861c31d1036b185b4e69b75"></h2>
+
+
 ### Summary
 
 ![](imgs/week1_summary_1.png)
@@ -41,7 +81,13 @@ This is the job of the Transport Layer ...
 ![](imgs/week1_summary_2.png)
 
 
+<h2 id="b138e49ee82925033b4cadd1e1875a26"></h2>
+
+
 ## 1.3 The IP service model
+
+<h2 id="2b9909937987ceb9cd0ce175a3d0ecee"></h2>
+
 
 ### The Internet Protocol (IP)
 
@@ -64,6 +110,9 @@ So the IP sends the datagram to the Link Layer that puts it inside a Link Frame,
 ![](imgs/week1_IP_3.png)
 
 
+<h2 id="d3615b48224a3e32af124d7fda942eb8"></h2>
+
+
 ### The IP Service Model
 
 Property | Behavior
@@ -73,12 +122,18 @@ Unreliable | Packets might be dropped
 Best effort | ... but (drop) only if necessary 
 Connectionless | No per-flow state, packets might be mis-sequenced.
 
+<h2 id="52ab6781a62a29cf194ddc5e9119b41a"></h2>
+
+
 ### Why is the IP service so simple ?
 
 - Simple, dumb, minimal:  Faster, more streamlined and lower cost to build and maintain. 
 - The end-to-end principle: Where possible, implement features in the end hosts. 
 - Allows a variety of reliable (or unreliable) services to be built on top.
 - Works over any link layer: IP makes very few assumptions about the Link layer below. 
+
+<h2 id="b06d2b103367d478d73385a5987955bb"></h2>
+
 
 ### The IP Service Model (Details)
 
@@ -104,6 +159,9 @@ Connectionless | No per-flow state, packets might be mis-sequenced.
     - In practice, very few options are used or processed by the routers. 
 
 
+<h2 id="98ba832534d52f2eeb1f55639c2b3b54"></h2>
+
+
 ### IPv4 Datagram
 
 
@@ -127,7 +185,13 @@ Connectionless | No per-flow state, packets might be mis-sequenced.
 - Checksum 
     - a checksum is calculated over the whole header so just in case the header is corrupted, we are not likely to deliver a packet to the wrong destination by mistake.
 
+<h2 id="90ce373cead78597b4eab07d595855f2"></h2>
+
+
 ## 1.4 Life of a Packet 
+
+<h2 id="515b8aa95d3218601bb8d3e9f1b078af"></h2>
+
 
 ### TCP Byte Stream 
 
@@ -138,6 +202,9 @@ Connectionless | No per-flow state, packets might be mis-sequenced.
     1. IP address,  the addresses the network layer uses.
     2. TCP port, tells the computer software which application to deliver data to.
     - ![](imgs/week1_tcp_ipport.png)
+
+<h2 id="7b37e06919b4cb0339448961e30338df"></h2>
+
 
 ### Inside Each Hop
 
@@ -157,6 +224,9 @@ When a packet arrives, the router checks which forward table table's entry patte
 
 The default router is the least specific pattern , it matches every IP address. The default router is used specially for a edge networks. 
 
+<h2 id="97b85ec6773a0a4d9d4e12c24e3d803f"></h2>
+
+
 ### Under the Hood
 
 - Request web page from www.cs.brown.edu
@@ -167,6 +237,9 @@ The default router is the least specific pattern , it matches every IP address. 
     4. next open web browse to visit www.cs.brown.edu. You can see packets in wireshark.
 - Use traceroute to see route packets take through Internet.
     - `traceroute -w 1  www.cs.brown.edu`
+
+
+<h2 id="0c0238af5d854a169c4ba62e3efaed73"></h2>
 
 
 ## 1.5 Packet switching principle
@@ -189,11 +262,17 @@ We call this "self routing" or "source routing", because the source specifies th
 One simple optimization , and what the Internet mostly does today, is to place a small amount of state in each switch which tells it which next hop to send packets to.  In this model, all the packet needs to carry is the destination address.  Using the address, each switch along the way can make the right decision. 
 
 
+<h2 id="e53a4db9876609340e93b5a5fcb15d35"></h2>
+
+
 ### Two consequences 
 
 1. **Simple** packet forwarding
     - No per-flow state required ( Flow: A collection of datagrams belonging to the same end-to-end communication, e.g. a TCP connection )
 2. **Efficient** sharing of links
+
+<h2 id="b33f4942f36f0a4483e5284ce9858f99"></h2>
+
 
 ### Data traffic is bursty
 
@@ -201,6 +280,9 @@ One simple optimization , and what the Internet mostly does today, is to place a
 - Packet switching allows flows to share link capacity.
 
 This is called *Statistical Multiplexing*.
+
+
+<h2 id="911bffd13f4b41279e0fce79091246b9"></h2>
 
 
 ## 1.7 Encapslation principle
@@ -218,6 +300,9 @@ This is called *Statistical Multiplexing*.
 ![](imgs/cs144_encapsulation.png)
 
 
+<h2 id="272462a8932363871c7f5992f2f6faf9"></h2>
+
+
 ## 1.8 Byte Order
 
 Network byte order is big endian 
@@ -225,6 +310,9 @@ Network byte order is big endian
 ```
 1024 = 0x400 =  | 0x40 | 0x00 | 
 ```
+
+<h2 id="4affcd52f209587a2c07eea129309e0b"></h2>
+
 
 ### Portable Code
 
@@ -244,6 +332,9 @@ Network byte order is big endian
     ```
 
 
+<h2 id="6ca7eb23164d497058e7d6d9be89f953"></h2>
+
+
 ## 1.9 IPv4 address
 
 - Netmask: apply this mask, if it matches, in the same network
@@ -255,6 +346,9 @@ Network byte order is big endian
     - Address block is a pair: address,count
     - 171.64.0.0/16 means any address in the range 171.64.0.0 to 171.64.255.255
     - A /24 describes 256 addresses, a /20 describes 4096 address.
+
+
+<h2 id="4a0ba9c9c27b58384a4dd32e6b85cc19"></h2>
 
 
 ## 1.11 Address Resolution Protocol (ARP)
@@ -307,6 +401,9 @@ So here we get to the problem ARP solves. A knows that it needs to send a packet
         - Request has sufficient information to generate a mapping 
         - Makes debugging much simpler
     - No "sharing" of state: bad state will die eventually
+
+<h2 id="b12cb2f95b2516af000240d2ebc65c26"></h2>
+
 
 ## 1.12
 

@@ -1,6 +1,15 @@
+...menustart
+
+- [lab0](#42192835e2a0227b76b905a8183cffdd)
+- [lab1](#e274b0a65912e49a28a9ae5c1479bdce)
+
+...menuend
 
 
 [cpp language document](https://en.cppreference.com/)
+
+<h2 id="42192835e2a0227b76b905a8183cffdd"></h2>
+
 
 # lab0
 
@@ -58,6 +67,9 @@ void get_URL(const string &host, const string &path) {
 ```
 
 </details>
+
+
+<h2 id="e274b0a65912e49a28a9ae5c1479bdce"></h2>
 
 
 # lab1

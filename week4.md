@@ -1,3 +1,28 @@
+...menustart
+
+- [4  Congestion Control](#1dd4ed1557fcfa90c9fae90b6155395c)
+    - [Outline](#606b51cc1c9d0b4af394419a22f2ff1f)
+    - [4.1 Basic](#cee72b80e7e4cc126e6326062afcff8f)
+        - [Max-min fairness: Single Link](#717029182340bb8b37b43783ef17fe98)
+        - [Goals for congestion control](#e62fc043eb2f572045f7b6727106cebb)
+        - [TCP Congestion Control](#7398b50b6c1a09f515156aed0f98fc8d)
+    - [4.2 Dynamics of a single AIMD flow](#83d90401ba110f27c3fafb58711f856f)
+    - [4.4 Multiple Flows](#b4794a51e50243c18bd05b95b6030ef0)
+    - [4.5 TCP congestion control  II](#8d43eb459024b59ca24fa32e90a1200f)
+        - [Congestion Windwos (TCP Tahoe)](#9c9002d91a254fc21975df5b882a1dac)
+        - [Slow Start Benefits](#bd8a3a02d8204c8f3711ca73eab04e2f)
+        - [Congestion Avoidance](#051092838b6a9dd05b10e688a31060ee)
+        - [State Transitions](#55a27539d50177c852b001d28c918a78)
+        - [Pre-Tahoe Timeouts](#20e0109bdeb850605f89d0ba8c54b2ab)
+        - [TCP Tahoe Timeouts](#12d231de5497fed363a67655a2fefd23)
+        - [Self-clocking](#e1412baab59989a880c375368a79315e)
+    - [TCP Reno (TODO)](#1129a2fc7bd45c43dd3e6fa2f4fe2175)
+
+...menuend
+
+
+<h2 id="1dd4ed1557fcfa90c9fae90b6155395c"></h2>
+
 
 # 4  Congestion Control
 
@@ -6,6 +31,9 @@ You can imagine that if senders were to send too many packets into the network, 
 Congestion control is about preventing the senders from overwhelming the network. 
 
 In this unit, we're going to talk about TCP and how TCP controls congestion. 
+
+<h2 id="606b51cc1c9d0b4af394419a22f2ff1f"></h2>
+
 
 ### Outline
 
@@ -20,7 +48,13 @@ In this unit, we're going to talk about TCP and how TCP controls congestion.
     - Performance in practice
 
 
+<h2 id="cee72b80e7e4cc126e6326062afcff8f"></h2>
+
+
 ## 4.1 Basic
+
+
+<h2 id="717029182340bb8b37b43783ef17fe98"></h2>
 
 
 ### Max-min fairness: Single Link
@@ -43,12 +77,18 @@ B(1)   ---- Router (A/0.4, B/0.4, C/0.2)----
 C(0.2) /
 ```
 
+<h2 id="e62fc043eb2f572045f7b6727106cebb"></h2>
+
+
 ### Goals for congestion control 
 
 1. High throughput:  Keep links busy and flows fast
 2. Max-min fairness
 3. Respond quickly to changing network conditions
 4. Distributed control
+
+<h2 id="7398b50b6c1a09f515156aed0f98fc8d"></h2>
+
 
 ### TCP Congestion Control
 
@@ -88,11 +128,17 @@ The scheme that we're going to use is AIMD( additive increase, multiplicative de
 2. If a packet is dropped:  W ← W/2
 
 
+<h2 id="83d90401ba110f27c3fafb58711f856f"></h2>
+
+
 ## 4.2 Dynamics of a single AIMD flow
 
 ![](imgs/cs144_sawteeth.png)
 
 ![](imgs/cs144_AIMD.png )
+
+
+<h2 id="b4794a51e50243c18bd05b95b6030ef0"></h2>
 
 
 ## 4.4 Multiple Flows
@@ -119,6 +165,9 @@ It means that when we're communicating with a server that's further away, we can
         - This means the RTT seen by packets is about the same, and we can safely assume RTT is constant
 
 
+<h2 id="8d43eb459024b59ca24fa32e90a1200f"></h2>
+
+
 ## 4.5 TCP congestion control  II
 
 TCP uses a simple finite state machine to control the number of packets it has outstanding in the network. 
@@ -133,6 +182,9 @@ AIMD is a simple and highly effective algorithm to manage congestion but this wa
 2. When should you send data retrasmissions ?
 3. When should you send acknowledgments ?
 
+<h2 id="9c9002d91a254fc21975df5b882a1dac"></h2>
+
+
 ### Congestion Windwos (TCP Tahoe)
 
 - Flow control window is only about endpoint
@@ -141,6 +193,9 @@ AIMD is a simple and highly effective algorithm to manage congestion but this wa
 - Separate congestion control into 2 states
     1. Slow start: on connection startup or packet timeout 
     2. Congestion avoidance: steady operation
+
+
+<h2 id="bd8a3a02d8204c8f3711ca73eab04e2f"></h2>
 
 
 ### Slow Start Benefits
@@ -153,11 +208,17 @@ AIMD is a simple and highly effective algorithm to manage congestion but this wa
     - the name slow start might seem a bit misleading, exponential increase is much faster than additive increase. 
     - it called slow start because it's slow in comparison to the old approach TCP.
 
+<h2 id="051092838b6a9dd05b10e688a31060ee"></h2>
+
+
 ### Congestion Avoidance
 
 - Increase by MSS²/congestion windows for each acknowledgment
 - Behavior: increase by one MSS each round trip time
 - Linear (additive) increase
+
+
+<h2 id="55a27539d50177c852b001d28c918a78"></h2>
 
 
 ### State Transitions
@@ -191,6 +252,9 @@ TCP sends new data when its sender window defines the minimum of its congestion 
 
 Q: When should TCP send data retransmissions ?
 
+<h2 id="20e0109bdeb850605f89d0ba8c54b2ab"></h2>
+
+
 ### Pre-Tahoe Timeouts
 
 - r is RTT estimate, initialize to something reasonable
@@ -199,6 +263,9 @@ Q: When should TCP send data retransmissions ?
 - Timeout = βr, β=2
 - What's the problem ?
     - The basic problem is that it assumes that the variance of our RTT measurement is a constant factor of its value. For example, high-low variant delay ( 稳定在 80ms的海底光纤 ) , 160ms  retransmit timeout is almost an entire wasted RTT. Or imagine the opposite case where the average RTT is 20ms but has very high variance ,sometimes 80ms RTT, despite the fact that a significant fraction of packets have a high RTT, TCP would assume these packets are lost and shrink its congestion window to 1 and retransmit them.
+
+<h2 id="12d231de5497fed363a67655a2fefd23"></h2>
+
 
 ### TCP Tahoe Timeouts 
 
@@ -218,9 +285,15 @@ Q: When should TCP send acknowledgments ?
 It turns out the answer is generally with little delay as possible. If TCP follows this policy it leads to a very important powerful behavior called self clocking.
 
 
+<h2 id="e1412baab59989a880c375368a79315e"></h2>
+
+
 ### Self-clocking
 
 Self-clocking means that if TCP sends acknowledgments aggressively then it turns out they will space out in time according to the throughput of the bottleneck link.
+
+
+<h2 id="1129a2fc7bd45c43dd3e6fa2f4fe2175"></h2>
 
 
 ## TCP Reno (TODO)

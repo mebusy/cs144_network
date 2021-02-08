@@ -1,7 +1,48 @@
+...menustart
+
+- [Week8 : Security](#69240a4d174535a84842569d1a639da1)
+    - [8.1 Introduction](#566f0a955002bd2e77bd0a2d2212b91a)
+        - [How can communication be compromised ?](#81794c0c647fa1397d2568e1839a64e7)
+        - [What we want](#57986eba556f0aa5431c6648b1d30a3c)
+        - [Types of attack](#d23f2bf5e6d69503e9ac3d8fb20c4e1b)
+    - [8.2 Layer 2 Attacks](#ddfa1f4c33db6125e0674dda15b018bb)
+        - [Common types of attack at Layer 2](#e06d93569623eb30a1110f6f0888b29f)
+        - [DHCP and DNS Masquerade](#8cd5721d2a7e401a35fb961e5121f376)
+        - [ARP Masquerade](#026fe6d01f49779b0cbe04b90eb1f22f)
+    - [8.2 Demo Attack](#b43bd4ef310de8bb41898b40d11c14c4)
+    - [8.3 Layer 3 Attacks](#f90238b9325abc8dcd2c4f7bf1913ae2)
+        - [ICMP Redirect](#4a03c80bad8d94d2fa19f7a9772248db)
+        - [BGP Attacks](#c089791204fe43e6e577f82fc4564884)
+        - [Some Examples](#d1bb6d751a151f58e203c5f1ef401830)
+        - [BGP Hijacking](#110f74b9172b3beb76dd634d3f21ccbc)
+    - [8.4](#6762f053abca7510f6648c71492724a7)
+        - [Denial of Service](#711d051a7c0db70ca108b804aa5319ac)
+        - [DoS attack overview](#50d511549aea3a9f3beb9bbfbae6debb)
+        - [Warm up: simple DoS attacks](#71b94781f967008e188ff91ef301aff7)
+        - [TODO](#b7b1e314614cf326c6e2b6eba1540682)
+    - [8.5 Security Principles](#711e06823dbd2cc2c624e3e311388080)
+        - [Basic problem](#c736c656c341e7b050d5613cfe97b765)
+        - [Cryptography](#64ef07ce3e4b420c334227eecb3b3f4c)
+        - [High Availability Design](#f5ea035d5e9bb67f313bb425f29cc39b)
+    - [8.6 Confidentiality (TODO)](#a21b6fae5f6ebc5f296e9bde270f9632)
+    - [8.7 Integrity](#9f416812fa6b57ff6f12d1e08eb53b38)
+        - [Two Integrity Example](#d10acd0bcce0cdab1f183a7d5d5dd9e3)
+
+...menuend
+
+
+<h2 id="69240a4d174535a84842569d1a639da1"></h2>
+
 
 # Week8 : Security
 
+<h2 id="566f0a955002bd2e77bd0a2d2212b91a"></h2>
+
+
 ## 8.1 Introduction
+
+<h2 id="81794c0c647fa1397d2568e1839a64e7"></h2>
+
 
 ### How can communication be compromised ?
 
@@ -16,12 +57,18 @@
     - Take over control of an end-host
 3. Prevent communication -- Usually called "denial of service".
 
+<h2 id="57986eba556f0aa5431c6648b1d30a3c"></h2>
+
+
 ### What we want 
 
 1. Secrecy/confidentiality: No one can listen-in to our communication. We will study encryption.
 2. Integrity -- Our message are not altered in transit. We will study message authentication codes (MACs).
 3. Authentication -- Confirm the identity of the other party. We will study digital signatures and certificates.
 4. Uninterrupted communication -- We don't want someone to prevent us from communicating. 
+
+
+<h2 id="d23f2bf5e6d69503e9ac3d8fb20c4e1b"></h2>
 
 
 ### Types of attack 
@@ -31,7 +78,13 @@
 3. Hijacking a running TCP connection.
 4. Denial of service
 
+<h2 id="ddfa1f4c33db6125e0674dda15b018bb"></h2>
+
+
 ## 8.2 Layer 2 Attacks
+
+<h2 id="e06d93569623eb30a1110f6f0888b29f"></h2>
+
 
 ### Common types of attack at Layer 2
 
@@ -57,6 +110,9 @@
     - ![](imgs/cs144_attack_swither.png)
     - This is called a MAC overflow attack.
 
+<h2 id="8cd5721d2a7e401a35fb961e5121f376"></h2>
+
+
 ### DHCP and DNS Masquerade
 
 The attacker is going to try and persuade you to use a rogue DHCP server instead. 
@@ -77,6 +133,9 @@ A second way is for the attacker to give Alice the IP address of a remote rogue 
 ![](imgs/cs144_8.1_att_dns.png)
 
 
+<h2 id="026fe6d01f49779b0cbe04b90eb1f22f"></h2>
+
+
 ### ARP Masquerade
 
 Finally, the attacker can set up a rogue ARP server. When Alice is sending packets to a local host, or via the router, she will first send an ARP request to find out the Ethernet address of the next hop. 
@@ -84,6 +143,9 @@ Finally, the attacker can set up a rogue ARP server. When Alice is sending packe
 First she sends a broadcast ARP request packet to the ARP server, which replies with the legitimate Ethernet address she is looking for.
 
 But if the attacker  sets up a rogue ARP server that responds faster than the legitimate ARP server, the attacker can give Alice the wrong information. If the attacker replies with the ethernet address of a rogue server in the local network, then all of Alice's traffic will be sent to the rogue server. This is an easy way to setup a man in the middle attack. 
+
+<h2 id="b43bd4ef310de8bb41898b40d11c14c4"></h2>
+
 
 ## 8.2 Demo Attack
 
@@ -108,6 +170,9 @@ tcpdump -n host 10.0.0.1
 DHCP attack ...
 
 
+<h2 id="f90238b9325abc8dcd2c4f7bf1913ae2"></h2>
+
+
 ## 8.3 Layer 3 Attacks
 
 1. Use ICMP to tell source end-host to redirect traffic
@@ -123,6 +188,9 @@ DHCP attack ...
 3. More specific prefix.
     - Insert more specific prefix to divert a portion of an address space.
     - requires masquerading as ISP, or taking over BGP TCP session.
+
+
+<h2 id="4a03c80bad8d94d2fa19f7a9772248db"></h2>
 
 
 ### ICMP Redirect
@@ -142,6 +210,9 @@ This is how ICMP redirects are supposed to work.
 The attacker can send an ICPM redirect message to tell her to route packets to `prefix-A` via the attacker's computer instead. 
 
 
+<h2 id="c089791204fe43e6e577f82fc4564884"></h2>
+
+
 ### BGP Attacks
 
 - Security vulnerabilities in BGP
@@ -150,6 +221,9 @@ The attacker can send an ICPM redirect message to tell her to route packets to `
     3. ISPs exchange BGP message over a regular TCP session
 - Almost any ISP can bring down the Internet
     - accidentally or maliciously 
+
+
+<h2 id="d1bb6d751a151f58e203c5f1ef401830"></h2>
 
 
 ### Some Examples
@@ -166,6 +240,9 @@ The attacker can send an ICPM redirect message to tell her to route packets to `
     - Luckily, a BGP monitor noticed in time
     - Believed by many to be malicious (to block Yahoo).
 
+<h2 id="110f74b9172b3beb76dd634d3f21ccbc"></h2>
+
+
 ### BGP Hijacking
 
 ![](imgs/cs144_bgp_hijack.png)
@@ -179,7 +256,13 @@ The Attacker has a different idea. The attacker is able to take over and control
 AS1 is no way of knowing that this is a lie and so might start routing traffic to AS Evil instead. 
 
 
+<h2 id="6762f053abca7510f6648c71492724a7"></h2>
+
+
 ## 8.4
+
+<h2 id="711d051a7c0db70ca108b804aa5319ac"></h2>
+
 
 ### Denial of Service
 
@@ -196,6 +279,9 @@ AS1 is no way of knowing that this is a lie and so might start routing traffic t
     - Later start simultaneous widespread attacks on a victim
 
 
+<h2 id="50d511549aea3a9f3beb9bbfbae6debb"></h2>
+
+
 ### DoS attack overview
 
 - Class of attacks that just target availability
@@ -205,6 +291,9 @@ AS1 is no way of knowing that this is a lie and so might start routing traffic t
     - Bragging rights
 - Can DoS at many different layers
     - Link, Network, Transprot, Application, ...
+
+<h2 id="71b94781f967008e188ff91ef301aff7"></h2>
+
 
 ### Warm up: simple DoS attacks
 
@@ -218,15 +307,24 @@ AS1 is no way of knowing that this is a lie and so might start routing traffic t
     - `ping -f ...`
 - Amplification can make attacks more powerful than resources directly available to attacker
 
+<h2 id="b7b1e314614cf326c6e2b6eba1540682"></h2>
+
+
 ### TODO
 
 ---
+
+<h2 id="711e06823dbd2cc2c624e3e311388080"></h2>
+
 
 ## 8.5 Security Principles
 
 1. Confidentiality
 2. Integrity
 3. Availability
+
+<h2 id="c736c656c341e7b050d5613cfe97b765"></h2>
+
 
 ### Basic problem
 
@@ -238,6 +336,9 @@ AS1 is no way of knowing that this is a lie and so might start routing traffic t
     - Design systems to scale well in response to attacks
         - 
 - Two approaches: cryptography and scalable system design
+
+
+<h2 id="64ef07ce3e4b420c334227eecb3b3f4c"></h2>
 
 
 ### Cryptography
@@ -265,6 +366,9 @@ AS1 is no way of knowing that this is a lie and so might start routing traffic t
         - Verisign says "here's a secret for Stanford"
         - Standford says "here's a secret for the provost"
 
+<h2 id="f5ea035d5e9bb67f313bb425f29cc39b"></h2>
+
+
 ### High Availability Design
 
 - Denail of service (Dos), Distributed Denail of Service (DDoS)
@@ -273,6 +377,9 @@ AS1 is no way of knowing that this is a lie and so might start routing traffic t
     - Keeping costs symmetric
     - Upstream filtering(stop letting those pings through, router!)
 - Continual arms race: not going to talk much about it.
+
+
+<h2 id="a21b6fae5f6ebc5f296e9bde270f9632"></h2>
 
 
 ## 8.6 Confidentiality (TODO)
@@ -296,6 +403,9 @@ AS1 is no way of knowing that this is a lie and so might start routing traffic t
     - 1:06
 
 
+<h2 id="9f416812fa6b57ff6f12d1e08eb53b38"></h2>
+
+
 ## 8.7 Integrity
 
 - Secrecy Is Not Enough
@@ -303,6 +413,9 @@ AS1 is no way of knowing that this is a lie and so might start routing traffic t
     - An adversary can still modify messages
 - Integrity: protecting message from tampering and modificaiton
 - Confidentiality without integrity is rare(and a sign of a poor design), while integrity without confidentiality is common
+
+<h2 id="d10acd0bcce0cdab1f183a7d5d5dd9e3"></h2>
+
 
 ### Two Integrity Example
 

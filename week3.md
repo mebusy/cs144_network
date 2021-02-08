@@ -1,5 +1,32 @@
+...menustart
+
+- [3 Packet Switching](#95d6e5152b7a7860c3f678b860a08f31)
+    - [Principles](#d96870a2167c8e557765bc04d6a4050c)
+    - [Switching and Forwarding 1](#941dc1ecaf7cb2c27e73856e25d5c8f0)
+        - [Generic Packet Switch](#2d8ccad07e004421be4300559351e27d)
+        - [Ethernet Switch](#df9e078a63b5048a6e949099474a7d52)
+        - [Internet Router](#91788f80199037e9f0d6952b91dfbddc)
+        - [Basic Operations](#b5794bba6843c21acafdd6a4bfd776be)
+        - [Lookup Address: Ethernet](#b7b5b2d8dfb76fc68801f4c6b1a96534)
+        - [Lookup Address](#01faf3e37dc5da6c3d06bcce4e2e7aa4)
+        - [Longest prefix match lookup implementation](#8c0068443e2c8016df017a23fa88db64)
+        - [Lookup Address: Generic](#9f9ebfc8cd2115dde70b4cad2c81968f)
+    - [Switching and Forwarding 2](#e0b9104f39f204f723da319e32f1b7a0)
+        - [Output Queued Packet Switch](#554d9652b25833d8ea915399758d888b)
+        - [Input Queued Packet Switch](#c142861869c041b9ec2a340edc3e58b6)
+        - [Virtual Output Queues](#d8499a9391a36ede4c218af4eeda56e4)
+        - [Properties of Output Queued switches](#3c5a9eb035d099c3a7a125772448aba1)
+
+...menuend
+
+
+<h2 id="95d6e5152b7a7860c3f678b860a08f31"></h2>
+
 
 # 3 Packet Switching 
+
+<h2 id="d96870a2167c8e557765bc04d6a4050c"></h2>
+
 
 ## Principles
 
@@ -10,7 +37,13 @@
 - Some real-time application use playback buffers to absort the variation in queuing delay.
 
 
+<h2 id="941dc1ecaf7cb2c27e73856e25d5c8f0"></h2>
+
+
 ## Switching and Forwarding 1
+
+<h2 id="2d8ccad07e004421be4300559351e27d"></h2>
+
 
 ### Generic Packet Switch
 
@@ -21,12 +54,18 @@
 3. Queue Packet
     - Buffer Memory
 
+<h2 id="df9e078a63b5048a6e949099474a7d52"></h2>
+
+
 ### Ethernet Switch
 
 1. Examine the header of each arriving frame
 2. If the Ethernet Destination Address is in the forwarding table, forward the frame to the correct output port(s)
 3. If the Ethernet DA is not in the table, broadcast the frame to **all** ports(except the one through which the frame arrived)
 4. Entries in the table are **learned** by examining the Ethernet SA of arriving packets.
+
+
+<h2 id="91788f80199037e9f0d6952b91dfbddc"></h2>
 
 
 ### Internet Router 
@@ -41,6 +80,9 @@
 7. Create a new Ethernet frame and send it
 
 
+<h2 id="b5794bba6843c21acafdd6a4bfd776be"></h2>
+
+
 ### Basic Operations
 
 1. Lookup Address
@@ -52,6 +94,9 @@
 At a high level, Ethernet switches and Internet routers perform similar operation.
 
 Address lookup is very different in switches and routers.  
+
+
+<h2 id="b7b5b2d8dfb76fc68801f4c6b1a96534"></h2>
 
 
 ### Lookup Address: Ethernet 
@@ -69,6 +114,9 @@ Ethernet DA = 0xB3D22571053B | Forward to port 5
     - Store addresses in hash table (maybe 2-way hash)
     - Look for exact match in hash table
 
+<h2 id="01faf3e37dc5da6c3d06bcce4e2e7aa4"></h2>
+
+
 ### Lookup Address 
 
 IP address ( in a router )
@@ -82,6 +130,9 @@ IP DA = 76.9.x.x  | Forward to 56.99.32.16
 
 
 Lookup is a **longest prefix match** , not an exact match
+
+
+<h2 id="8c0068443e2c8016df017a23fa88db64"></h2>
 
 
 ### Longest prefix match lookup implementation
@@ -116,6 +167,9 @@ j | 11110000
 · | 11111111
 
 
+<h2 id="9f9ebfc8cd2115dde70b4cad2c81968f"></h2>
+
+
 ### Lookup Address: Generic 
 
 Generic or abstract lookups <Match,Action>
@@ -128,6 +182,9 @@ Eth DA=Y and IP DA=Z  | drop packet
 Generalization of lookups and forwarding action in switches, routers, firewalls, etc.
 
 
+<h2 id="e0b9104f39f204f723da319e32f1b7a0"></h2>
+
+
 ## Switching and Forwarding 2
 
 Switching packets to the egress port 
@@ -135,6 +192,9 @@ Switching packets to the egress port
 - Output queuing and shared memory
 - Input queuing and head-of-line blocking
 - Virtual output queues
+
+<h2 id="554d9652b25833d8ea915399758d888b"></h2>
+
 
 ### Output Queued Packet Switch 
 
@@ -159,6 +219,9 @@ Output-queue switches are said to be limited by this problem that have have to h
 One obvious way to solve this problem is to move the queues from the output over to the input. 
 
 
+<h2 id="c142861869c041b9ec2a340edc3e58b6"></h2>
+
+
 ### Input Queued Packet Switch 
 
 ```
@@ -175,12 +238,18 @@ The problem is, that you can only send one of them(red packets) at a time. Even 
 
 Natural solutions to this, which is pretty widely used is something called Virtual Output Queues.
 
+<h2 id="d8499a9391a36ede4c218af4eeda56e4"></h2>
+
+
 ### Virtual Output Queues 
 
 Each input maintains a separate queue for each output. 
 
 ![](imgs/cs144_headoflineblock2.png)
  
+
+<h2 id="3c5a9eb035d099c3a7a125772448aba1"></h2>
+
 
 ### Properties of Output Queued switches 
 

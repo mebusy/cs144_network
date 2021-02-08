@@ -1,3 +1,14 @@
+...menustart
+
+- [IPv6](#fdb7cb8f657426e7c409bfd6d1a36ce4)
+    - [Address Structure](#47d2b1ca19f15df7102b1b7424ae08ab)
+    - [How to assignment ? Example Approcach (RFC 4291)](#01b16ac39508c924e127c0de66a45bf1)
+
+...menuend
+
+
+<h2 id="fdb7cb8f657426e7c409bfd6d1a36ce4"></h2>
+
 
 # IPv6
 
@@ -5,6 +16,9 @@
 - Basic protocol published in 1998 (RFC 2460)
 - Lull, then increased interested in 2003-2006
 - Hard push within the IEFT today for adoption
+
+<h2 id="47d2b1ca19f15df7102b1b7424ae08ab"></h2>
+
 
 ## Address Structure
 
@@ -18,6 +32,9 @@
     - Use brackets in URLs : http://[2001:470:806d:1::9]:80
     - Can write low 32 bits like IPv4
         - 64:ff9b::171.66.3.9
+
+
+<h2 id="01b16ac39508c924e127c0de66a45bf1"></h2>
 
 
 ## How to assignment ? Example Approcach (RFC 4291)

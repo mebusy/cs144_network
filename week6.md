@@ -1,5 +1,45 @@
+...menustart
+
+- [Week6 Routing](#a730cc694c555cb69701f9c14b2e4f23)
+    - [Summary](#290612199861c31d1036b185b4e69b75)
+    - [The Basics](#841c74f2ae3176f9ecd45060f7d9185e)
+    - [Distance Vector Protocol:  Bellman Ford algorithm](#c9ddee326ba7dae6742a191d9f3fd6c8)
+        - [The distributed Bellman-Ford Algorithm](#07df7392f4e048b74185cae533348cc2)
+        - [A problem with Bellman-Ford](#1f3c7e03df463221adbdcce1a907987a)
+    - [Link State Protocol: Dijkstra's shortest path first algorithm](#09b6d85fe1fbae5a76067f74b594808b)
+        - [Dijkstra's shortest path first algorithm ( example of a "Link State Algorithm")](#08f41ca2aebf677919249081f99a0d85)
+    - [Internet (RIP,OSPF) AS's](#7063a89851506a03f0927e131d720dd1)
+        - [Autonomous Systems](#1c332526b78256acc23ae810a40f690b)
+        - [Interior Routing Protocols](#4972630554b9418e865dc2e4d292a229)
+        - [Routing to a single exit point](#8ab27579cffc193d4d8c990202868c68)
+        - [Routing to multiple exit points](#e877f82e1023cf07d59b21b0546ba3c2)
+        - [Exterior Routing Protocol](#a02d84bc23a433a98c88a97612020faa)
+        - [Summary](#290612199861c31d1036b185b4e69b75)
+    - [Routing BGP (Border gateway protocol)](#c25c881e2875c1e4b50e030ab120ec3b)
+        - [Provider and Customer](#64df8d1d93a49fed340a6b766a4876be)
+    - [Routing -- Multicast Routing](#0973698721bde2efc01b9b3b928635cf)
+        - [Multicast](#f98714815862cc6a2f47e6a3e6f045a5)
+        - [Flooding](#c244d080617e096f13d28a4fdf82b8d9)
+        - [Reverse Path Broadcast (RPB)](#a4c5bfe1b4e0b684ebbc95a23b9264ce)
+        - [Summary  RPB + Pruning](#6774f8fd4492a658aa7ce57825ce162e)
+        - [Addresses and joining a group](#6df42dadefed9e3a710dbe735b819764)
+        - [Multicast routing in the Internet](#356991702db88dc263819e42c0739509)
+        - [Multicast in practice](#848e052b17a9a9377297188420fbf8a0)
+    - [Spanning Tree Protocol](#54b7c8ae2166120716fb4d72e23815e0)
+        - [Recall:  Ethernet Switch](#98ec334cccdab5865475224aa59cf1f2)
+        - [Preventing loops: Spanning Tree Protocol](#c447cafe15ca195383488def417da42f)
+        - [How it works](#9ffdb95250e26c7a6b468126ac7c75b0)
+
+...menuend
+
+
+<h2 id="a730cc694c555cb69701f9c14b2e4f23"></h2>
+
 
 # Week6 Routing
+
+<h2 id="290612199861c31d1036b185b4e69b75"></h2>
+
 
 ## Summary
 
@@ -39,6 +79,9 @@ Generally speaking , routing algorithms used in the Internet, such as OSPF and R
 -------------------------------------------------------
 
 
+<h2 id="841c74f2ae3176f9ecd45060f7d9185e"></h2>
+
+
 ## The Basics
 
 - Approaches 
@@ -73,6 +116,9 @@ Generally speaking , routing algorithms used in the Internet, such as OSPF and R
         - In some applications, an end host might want to send packets to a set of hosts. 
 
 
+<h2 id="c9ddee326ba7dae6742a191d9f3fd6c8"></h2>
+
+
 ## Distance Vector Protocol:  Bellman Ford algorithm
 
 Distance vector protocol is a way in which the routers maintain a vector of their distances to a given, or to all of the other routers, and then iteratively, through a distributed algorithm, they converge on finding the shortest path or the lowest cost spanning tree from them to every other router.
@@ -82,6 +128,9 @@ And we're going to see a specific example of this, what's known as the Bellman F
 So the particular problem we're going to address is how can routers work together to find the minimum cost spanning tree.  Notice that this is equivalent to finding the minimum cost spanning tree amongst just the routers.
 
 ![](imgs/cs144_6.0_spanning_tree_ex2.png) 
+
+
+<h2 id="07df7392f4e048b74185cae533348cc2"></h2>
 
 
 ### The distributed Bellman-Ford Algorithm 
@@ -118,6 +167,9 @@ In the next iteration, R₂ which previously thought that the lowest cost is 7, 
     3. What happens when link costs change, or when routers/links fail?
         - In general, it will continue to converge 
 
+<h2 id="1f3c7e03df463221adbdcce1a907987a"></h2>
+
+
 ### A problem with Bellman-Ford
 
 "Bad news travels slowly"
@@ -134,9 +186,15 @@ There's a fairly simple fix to this.
 4. There are many problems with ( and fixes for) the Bellman-Ford algorithm.
 
 
+<h2 id="09b6d85fe1fbae5a76067f74b594808b"></h2>
+
+
 ## Link State Protocol: Dijkstra's shortest path first algorithm
 
 In this video I'm going to tell you about the link state algorithm, in particular Dijkstra's Shortest-Path first algorithm. This is an example of a link-state protocol where the router start flooding to each other the all the information about the topology of the network: whick links are there, which links are up, which ones are down. And then from there each router is going to calculate its shortest path tree from it to every other router. 
+
+<h2 id="08f41ca2aebf677919249081f99a0d85"></h2>
+
 
 ### Dijkstra's shortest path first algorithm ( example of a "Link State Algorithm")
 
@@ -158,6 +216,9 @@ Questions:
     - They then rerun Dijkstra's algorithm, calculate the lowest cost spanning tree from scratch. 
 
 
+<h2 id="7063a89851506a03f0927e131d720dd1"></h2>
+
+
 ## Internet (RIP,OSPF) AS's
 
 - Outline
@@ -167,6 +228,9 @@ Questions:
     - The structure of the Internet
 
 ![](imgs/cs144_hierarchy.png)
+
+
+<h2 id="1c332526b78256acc23ae810a40f690b"></h2>
 
 
 ### Autonomous Systems 
@@ -181,6 +245,9 @@ Questions:
         - Enter: 171.64.13.26
     - Stanford(32), AT&T(797), Google(15169,22859,36039)
     - `traceroute -a <destination>`  will report AS numbers.
+
+<h2 id="4972630554b9418e865dc2e4d292a229"></h2>
+
 
 ### Interior Routing Protocols
 
@@ -201,6 +268,9 @@ Questions:
     - Widely used, complex.
     - IS-IS(RFC 1142) is similar, and is also widely used.
 
+<h2 id="8ab27579cffc193d4d8c990202868c68"></h2>
+
+
 ### Routing to a single exit point 
 
 - There is only one exit point, so routers within the AS can use default routing
@@ -209,6 +279,9 @@ Questions:
     - Default router is the border gateway to the next AS.
 - Routing tables in single exit AS's tend to be small.
     - because each router only needs to hold the addresses for the prefixes within its autonomous system. Otherwise it just forwards them out. Nice and easy.
+
+
+<h2 id="e877f82e1023cf07d59b21b0546ba3c2"></h2>
 
 
 ### Routing to multiple exit points
@@ -225,6 +298,9 @@ Approach 2: Pick exit closest to destination.
     - The more elaborate way would be to pick the exit, which is closest to the destination, or is on the lowest cost path.
 
 
+<h2 id="a02d84bc23a433a98c88a97612020faa"></h2>
+
+
 ### Exterior Routing Protocol
 
 - Every AS must interconnect to other AS using BGP-4
@@ -238,6 +314,9 @@ Approach 2: Pick exit closest to destination.
 
 - BGP-4 is designed to work in a way that will allow for that policy to be a local, private matter for the autonomous system. 
 
+<h2 id="290612199861c31d1036b185b4e69b75"></h2>
+
+
 ### Summary
 
 - The Internet consist of multiple AS's each managed independently.
@@ -245,6 +324,9 @@ Approach 2: Pick exit closest to destination.
 - Stub AS's use simple default routing 
 - AS's with multiple exits must decide the best exit.
 - AS's must connect using the BGP-4 protocol.
+
+
+<h2 id="c25c881e2875c1e4b50e030ab120ec3b"></h2>
 
 
 ## Routing BGP (Border gateway protocol)
@@ -263,6 +345,9 @@ Approach 2: Pick exit closest to destination.
 - When a link/router fails, the path is "withdrawn".
 
 
+<h2 id="64df8d1d93a49fed340a6b766a4876be"></h2>
+
+
 ### Provider and Customer
 
 **The peering Relationship**
@@ -277,7 +362,13 @@ That's because typically the relationship here between 2 peers is settlement fre
 
 ---
 
+<h2 id="0973698721bde2efc01b9b3b928635cf"></h2>
+
+
 ## Routing -- Multicast Routing
+
+<h2 id="f98714815862cc6a2f47e6a3e6f045a5"></h2>
+
 
 ### Multicast 
 
@@ -290,6 +381,9 @@ That's because typically the relationship here between 2 peers is settlement fre
     - DVMRP -- the first multicast routing protocol
     - PIM -- protocol independent multicast
 
+<h2 id="c244d080617e096f13d28a4fdf82b8d9"></h2>
+
+
 ### Flooding
 
 We already saw one way in which packets could be delivered to a large number of hosts with a rather simplisitc  approach of flooding.
@@ -301,6 +395,9 @@ The basic problem in the flooding is that when there are loops in the topology, 
 ![](imgs/cs144_6_flooding_loop.png)
 
 We saw in the spanning tree protocol how these loops were broken. We can look a different way they can be avoided in the first place.  That approach is called Reverse Path Broadcast (RPB), aka Reverse Path Forwarding (RPF)
+
+<h2 id="a4c5bfe1b4e0b684ebbc95a23b9264ce"></h2>
+
 
 ### Reverse Path Broadcast (RPB)
 
@@ -346,11 +443,17 @@ Now this is all very well as a means for broadcast but we're talking about multi
 
 So in this case this would then be removed from the reverse path broadcast tree and now that tree will only reach the end hosts that are interested in it. 
 
+<h2 id="6774f8fd4492a658aa7ce57825ce162e"></h2>
+
+
 ### Summary  RPB + Pruning 
 
 1. Packets delivered loop-free to every end host.
 2. Routers with no interested hosts send prune message towards source
 3. Resulting tree is the minimum cost spanning tree from source to the set of interested hosts.
+
+<h2 id="6df42dadefed9e3a710dbe735b819764"></h2>
+
 
 ### Addresses and joining a group 
 
@@ -365,6 +468,9 @@ So in this case this would then be removed from the reverse path broadcast tree 
         - In fact, the routers will probe or will send out a request to all of the hosts connected to them and say, what multicast groups are you interested in? And then the hosts will respond and will say which groups they want to receive from.  And if they don't receive any reply after a while, then the membership times out.
 
 
+<h2 id="356991702db88dc263819e42c0739509"></h2>
+
+
 ### Multicast routing in the Internet 
 
 - DVMRP 
@@ -377,6 +483,9 @@ So in this case this would then be removed from the reverse path broadcast tree 
     - Dense mode(RFC 3973): Similar to DVMRP
     - Sparse mode(RFC 4601): Builds rendezvous points through which packets join small set of spanning trees.
 
+<h2 id="848e052b17a9a9377297188420fbf8a0"></h2>
+
+
 ### Multicast in practice 
 
 - Multicast used less than originally expected
@@ -387,6 +496,9 @@ So in this case this would then be removed from the reverse path broadcast tree 
 
 ---
 
+<h2 id="54b7c8ae2166120716fb4d72e23815e0"></h2>
+
+
 ## Spanning Tree Protocol
 
 - Outline
@@ -394,6 +506,9 @@ So in this case this would then be removed from the reverse path broadcast tree 
     - We know how addresses are learned, but how are loops prevented ?
     - Ethernet switches build a spanning tree over which packets are forward.
         - instead of building a spanning tree per destination , or per router, in Ethernet we're going to build a single spanning tree for the entire network.
+
+<h2 id="98ec334cccdab5865475224aa59cf1f2"></h2>
+
 
 ### Recall:  Ethernet Switch
 
@@ -405,6 +520,9 @@ So in this case this would then be removed from the reverse path broadcast tree 
     - The spanning tree protocol was invented to solve this problem.
         - rather than deciding how we router along a spanning tree for each address, or to reach each destination, it's going to build one spanning tree for the entire network. 
 
+<h2 id="c447cafe15ca195383488def417da42f"></h2>
+
+
 ### Preventing loops: Spanning Tree Protocol
 
 - The topology of switches is a graph
@@ -414,6 +532,9 @@ So in this case this would then be removed from the reverse path broadcast tree 
 - The distributed protocol decides:
     1. Which switch is the Root of the tree, and 
     2. Which ports are allowed to forward packets along the tree
+
+<h2 id="9ffdb95250e26c7a6b468126ac7c75b0"></h2>
+
 
 ### How it works
 

@@ -1,5 +1,39 @@
+...menustart
+
+- [5 Application](#561978b2c62330acd930d0b151984c2a)
+    - [NATs - Introduction](#0043c33eee67be3128b5c7ccd9aa28aa)
+    - [Application](#e498749f3c42246d50b15c81c101d988)
+        - [Incoming Connections](#d539d602fd44c4d7dc4d0076de85eb51)
+    - [HTTP](#293c9ea246ff9985dc6f62a650f78986)
+        - [HTTP format](#5bd3d7c29198ef639fbf7c600b62d38a)
+        - [HTTP/1.0](#59676a6e51135fc7a38c24682c617503)
+        - [HTTP/1.1 Keep Alive](#af78084274da85ffef28755f9aa1a2f5)
+    - [BitTorrent](#9cbda39984536dc213c78d3f20f54400)
+        - [Torrent File](#9fad3b07a62b5a51b8e1f1a4371b334a)
+    - [DNS](#ed5f2bdecbd4bd349d09412d1ff6a6fb)
+        - [HOSTS.TXT](#12fac4723019c8925fa868fda50138af)
+        - [Domain Name System](#76ada12e2cf128a9bd1e5db3c106f915)
+        - [Domain Name System Design](#74345e069716cbc865e5b3a306f21113)
+        - [DNS Servers](#4fe46eb6b5cc7a722feed9ebaee5bc14)
+        - [A DNS Query](#aafe1a38deda89a59d4ceed1672d0679)
+        - [Resource Records](#f83ee67f2ab856bfaf1c60bc93af48c1)
+        - [CNAME Record](#eb8b9a0afeac21d7af9049b9221639c1)
+        - [MX Records](#f02feb7070494e6f40d4b748a6057a89)
+        - [Many Other kinds of Records](#5285037804753bf7877f614e34d1c656)
+    - [DHCP](#54201c55d2bdc7a9e19d9e032d8c0ede)
+        - [Communicating with IP](#117971daa9769a843276d7e1619955e9)
+        - [DHCP](#54201c55d2bdc7a9e19d9e032d8c0ede)
+
+...menuend
+
+
+<h2 id="561978b2c62330acd930d0b151984c2a"></h2>
+
 
 # 5 Application 
+
+<h2 id="0043c33eee67be3128b5c7ccd9aa28aa"></h2>
+
 
 ## NATs - Introduction
 
@@ -67,7 +101,13 @@ NAT rewrites source IP, source port. It sets up a mapping between these (interna
     - 第三条连接为了避免与第二条产生相同的 socket 而改变了源端口
         - socket 必须唯一
 
+<h2 id="e498749f3c42246d50b15c81c101d988"></h2>
+
+
 ## Application 
+
+<h2 id="d539d602fd44c4d7dc4d0076de85eb51"></h2>
+
 
 ### Incoming Connections 
 
@@ -84,7 +124,13 @@ NAT rewrites source IP, source port. It sets up a mapping between these (interna
     - not work for symmetric NAT.
 
 
+<h2 id="293c9ea246ff9985dc6f62a650f78986"></h2>
+
+
 ## HTTP
+
+<h2 id="5bd3d7c29198ef639fbf7c600b62d38a"></h2>
+
 
 ### HTTP format
 
@@ -101,11 +147,17 @@ NAT rewrites source IP, source port. It sets up a mapping between these (interna
 ![](imgs/cs144_http_format_res.png)
 
 
+<h2 id="59676a6e51135fc7a38c24682c617503"></h2>
+
+
 ### HTTP/1.0
 
 - Open connection
 - Issue Get
 - Server closes connection after response
+
+<h2 id="af78084274da85ffef28755f9aa1a2f5"></h2>
+
 
 ### HTTP/1.1 Keep Alive
 
@@ -122,11 +174,17 @@ NAT rewrites source IP, source port. It sets up a mapping between these (interna
 Now the client can send further requests on the same connection. It can also open more connections, if it wants , but it doesn't have to.
 
 
+<h2 id="9cbda39984536dc213c78d3f20f54400"></h2>
+
+
 ## BitTorrent
 
 BitTorrent allows people to share and exchange large files. A bittorrent client requests documents from other clients. So that single client can request from many others in parrllel. 
 
 BitTorrent breaks files up into chunks of data called pieces. When a client downloads a complete piece from another client, it then tells other clients it has that piece so they can download it too. These collections of collaborating clients are called **swarms**.
+
+<h2 id="9fad3b07a62b5a51b8e1f1a4371b334a"></h2>
+
 
 ### Torrent File 
 
@@ -148,12 +206,21 @@ A client joins a swarm by downloading a Torrent file that tells it information a
     - When down to the last few pieces, ask for them from multiple peers
 
 
+<h2 id="ed5f2bdecbd4bd349d09412d1ff6a6fb"></h2>
+
+
 ## DNS
+
+<h2 id="12fac4723019c8925fa868fda50138af"></h2>
+
 
 ### HOSTS.TXT
 
 - Originally, all hosts were in a file HOSTS.TXT, maintained by Network Information Center- Hosts periodically used a file transfer protocol to download new version
     - Requires n² network capacity, does not scale well.
+
+<h2 id="76ada12e2cf128a9bd1e5db3c106f915"></h2>
+
 
 ### Domain Name System
 
@@ -164,6 +231,9 @@ A client joins a swarm by downloading a Torrent file that tells it information a
 - Must be robust to individual node failures.
 
 
+<h2 id="74345e069716cbc865e5b3a306f21113"></h2>
+
+
 ### Domain Name System Design 
 
 - Two properties make DNS design feasible
@@ -171,6 +241,9 @@ A client joins a swarm by downloading a Torrent file that tells it information a
     - Loose consistency: changes can take a little while to propagate
 - Two properties allow extensive caching 
     - Look up a name, keep result for a long time , and then use it to answer other queries.
+
+<h2 id="4fe46eb6b5cc7a722feed9ebaee5bc14"></h2>
+
 
 ### DNS Servers
 
@@ -184,6 +257,9 @@ A client joins a swarm by downloading a Torrent file that tells it information a
     - Bootstrap: root server IPs are stored in a file on name server
     - Replicated through anycast (discussed later in course)
 
+<h2 id="aafe1a38deda89a59d4ceed1672d0679"></h2>
+
+
 ### A DNS Query
 
 - 2 types of queries
@@ -196,6 +272,9 @@ A client joins a swarm by downloading a Torrent file that tells it information a
     - Prefix messages with 16-bit length field
 
 - ![](imgs/cs144_DNS_query.png)
+
+<h2 id="f83ee67f2ab856bfaf1c60bc93af48c1"></h2>
+
 
 ### Resource Records
 
@@ -239,6 +318,9 @@ cluster90-elbwpeel-1jjv8xqi5kd5g-1169217295.us-east-1.elb.amazonaws.com. 300 IN	
 
 Besides an A record and NS record, there is something called the CNAME record, a canonical name.
 
+<h2 id="eb8b9a0afeac21d7af9049b9221639c1"></h2>
+
+
 ### CNAME Record
 
 - Canonical name record, tells you a name is an alias
@@ -251,6 +333,9 @@ Besides an A record and NS record, there is something called the CNAME record, a
 - 区别
     - A记录就是把一个域名解析到一个IP地址（Address，特制数字IP地址），而CNAME记录就是把域名解析到另外一个域名。
     - CNAME将几个主机名指向一个别名，其实跟指向IP地址是一样的，因为这个别名也要做一个A记录的。但是使用CNAME记录可以很方便地变更IP地址。
+
+
+<h2 id="f02feb7070494e6f40d4b748a6057a89"></h2>
 
 
 ### MX Records
@@ -266,6 +351,9 @@ Anothe kind of DNS record is MX record.
 - What if mail-server-name does not have an A record ?
     - dig mx bad-mx.scs.stanford.edu
 
+<h2 id="5285037804753bf7877f614e34d1c656"></h2>
+
+
 ### Many Other kinds of Records
 
 - SOA: Start of Authority
@@ -274,7 +362,13 @@ Anothe kind of DNS record is MX record.
 - AAAA: IPv6 address records
 
 
+<h2 id="54201c55d2bdc7a9e19d9e032d8c0ede"></h2>
+
+
 ## DHCP
+
+<h2 id="117971daa9769a843276d7e1619955e9"></h2>
+
 
 ### Communicating with IP
 
@@ -285,6 +379,9 @@ Anothe kind of DNS record is MX record.
         - if the target node in not on the local subnet, what's the IP addrees of the next/first hop towards destinations outside of the local subnet. 
     - A DNS server IP address is also useful ( but not necessary for IP )
 - Problem: how do we get these values ?
+
+
+<h2 id="54201c55d2bdc7a9e19d9e032d8c0ede"></h2>
 
 
 ### DHCP
